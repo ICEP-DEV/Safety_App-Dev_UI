@@ -18,7 +18,7 @@ class ReportIncidents extends StatefulWidget {
 }
 
 class _ReportIncidentsState extends State<ReportIncidents> {
-  DataModel? _dataMOdel;    
+  DataModel? _dataMOdel;
   Uint8List? imageBytes;
   File? imageFile;
   late CloudApi api;
@@ -27,7 +27,7 @@ class _ReportIncidentsState extends State<ReportIncidents> {
   @override
   void initState() {
     super.initState();
-    rootBundle.loadString('assets/credentials.json').then((json) {
+    rootBundle.loadString('credentials.json').then((json) {
       api = CloudApi(json);
     });
   }
@@ -42,8 +42,7 @@ class _ReportIncidentsState extends State<ReportIncidents> {
     "Murder",
     "Bulling",
     "GBV & F",
-    "Injury" 
-
+    "Injury"
   ];
 
   String selectedCrime = "Theft";
@@ -94,7 +93,7 @@ class _ReportIncidentsState extends State<ReportIncidents> {
   void _saveImage() async {
 //upload to google cloud
     final response = await api.save(_imageName!, imageBytes!);
-    print(response);
+    print(response.downloadLink);
     img = response.toString();
     Fluttertoast.showToast(
         msg: ' image saved',
