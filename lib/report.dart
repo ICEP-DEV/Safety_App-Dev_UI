@@ -94,7 +94,7 @@ class _ReportIncidentsState extends State<ReportIncidents> {
 //upload to google cloud
     final response = await api.save(_imageName!, imageBytes!);
     print(response.downloadLink);
-    img = response.toString();
+    img = response.downloadLink.toString();
     Fluttertoast.showToast(
         msg: ' image saved',
         toastLength: Toast.LENGTH_SHORT,
