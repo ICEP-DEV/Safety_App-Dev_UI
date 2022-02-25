@@ -1,4 +1,4 @@
-package com.example.completereport
+package com.example.v_chat2
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,24 +1,44 @@
-import 'dart:io';
-import 'dart:typed_data';
-import 'package:googleapis_auth/auth_io.dart' as auth;
-import 'package:gcloud/storage.dart';
 
-class CloudApi {
-  final auth.ServiceAccountCredentials _credentials;
-  auth.AutoRefreshingAuthClient? _client;
-  CloudApi(String json)
-      : _credentials = auth.ServiceAccountCredentials.fromJson(json);
+//  import 'dart:convert';
+// import 'package:flutter/material.dart';
+// import 'package:http/http.dart' as http;
 
-  Future<ObjectInfo> save(String name, Uint8List imageBytes) async {
-    //create a client
-    if (_client == null)
-      _client =
-          await auth.clientViaServiceAccount(_credentials, Storage.SCOPES);
-    //create storage object
-    var storage = Storage(_client!, 'image upload google storage');
-    //connect to bucket
-    var bucket = storage.bucket('bucket_for_img');
-    // save to bucket
-    return await bucket.writeBytes(name, imageBytes);
-  }
-}
+// DataModel dataModeFromJson(String str) => DataModel.fromJson(json.decode(str));
+
+//  DataModel _dataModel;
+
+//  class DataModel {
+//    DataModel({required this.text});
+
+//       String text;
+
+//    factory DataModel.fromJson(Map<String, dynamic> json) => DataModel(
+//          text: json["text"],
+         
+//        );
+//    Map<String, dynamic> toJson() => {
+//          "text": text,
+//        };
+//  }
+
+//  Future<DataModel> submitData(
+//    TextEditingController _text,
+
+//  ) async {
+//    var response = await http.post(Uri.http('10.0.2.2', '/r'), body: {
+//      "time": DateTime.now().toString(),
+//      "text": _text.text,
+  
+//    });
+
+//    var data = response.body;
+//    print(data);
+//    if (response.statusCode == 200) {
+//      String responseString = response.body;
+//      dataModeFromJson(responseString);
+//    }
+//  }
+
+
+
+
