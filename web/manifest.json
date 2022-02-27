@@ -1,6 +1,6 @@
 {
-    "name": "completereport",
-    "short_name": "completereport",
+    "name": "testim",
+    "short_name": "testim",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

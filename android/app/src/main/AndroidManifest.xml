@@ -1,11 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.completereport">
-
-   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
+    package="com.example.testim">
    <application
-        android:label="completereport"
+        android:label="testim"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
