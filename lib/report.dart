@@ -8,7 +8,9 @@ import 'package:geocoding/geocoding.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'addtestimonial.dart';
 import 'api.dart';
+import 'requestchart.dart';
 
 class ReportIncidents extends StatefulWidget {
   const ReportIncidents({Key? key}) : super(key: key);
@@ -104,13 +106,13 @@ class _ReportIncidentsState extends State<ReportIncidents> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[700],
       appBar: AppBar(
-        title: Text("Reporting Incidents"),
+        backgroundColor: Colors.red[700],
+        title: Text("Please complete Report Form"),
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.red[700],
           child: Text(
             'Report',
             style: TextStyle(color: Colors.white),
@@ -140,7 +142,7 @@ class _ReportIncidentsState extends State<ReportIncidents> {
             DropdownButton<String>(
               isExpanded: true,
               iconSize: 36,
-              iconEnabledColor: Colors.red,
+              iconEnabledColor: Colors.red[700],
               value: selectedCrime,
               onChanged: (value) {
                 setState(() {
@@ -159,8 +161,8 @@ class _ReportIncidentsState extends State<ReportIncidents> {
             TextField(
               controller: _controller,
               decoration: InputDecoration(
-                hintText: "Describe Incident",
-                labelText: "Description",
+                hintText: "type here",
+                labelText: "Tell your story",
                 labelStyle: TextStyle(fontSize: 18, color: Colors.black),
                 border: OutlineInputBorder(),
               ),
@@ -194,7 +196,6 @@ class _ReportIncidentsState extends State<ReportIncidents> {
                 height: 190,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: Colors.grey,
                   border: Border.all(width: 8, color: Colors.black54),
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -209,19 +210,41 @@ class _ReportIncidentsState extends State<ReportIncidents> {
                 Expanded(
                     child: ElevatedButton(
                   onPressed: () => getImage(source: ImageSource.camera),
-                  child: Text('capture img'),
+                  child: Text('Capture '),
                 )),
                 SizedBox(width: 5),
                 Expanded(
                     child: ElevatedButton(
                   onPressed: () => getImage(source: ImageSource.gallery),
-                  child: Text('Select img'),
+                  child: Text('Gallary'),
                 )),
-                SizedBox(width: 5),
+                SizedBox(width: 7),
                 ElevatedButton(
                     onPressed: () => _saveImage(), child: Text('save img')),
               ],
             ), //until here
+            SizedBox(height: 24),
+            Row(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddTestimonials()));
+                  },
+                  child: Text('Testimonial =>'),
+                ),
+                SizedBox(width: 7),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => RequestChat()));
+                  },
+                  child: Text('Request Chat =>'),
+                ),
+              ],
+            )
           ]),
         ),
       ),
