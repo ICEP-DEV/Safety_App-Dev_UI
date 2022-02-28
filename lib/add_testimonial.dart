@@ -135,9 +135,7 @@ class _AddTestimonial extends State<AddTestimonial> {
   }
 }
 
-// });
 String? selectedName;
-//print(selectedName);
 
 Future<DataModel?> submitData(
     TextEditingController controller, selectedName) async {
@@ -148,6 +146,7 @@ Future<DataModel?> submitData(
   });
   var data = response.body;
   print(data);
+  print(selectedName);
   if (response.statusCode == 200) {
     String responseString = response.body;
     dataModeFromJson(responseString);
