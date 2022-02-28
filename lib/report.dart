@@ -166,6 +166,7 @@ class _ReportIncidentsState extends State<ReportIncidents> {
               ),
             ),
             SizedBox(height: 20),
+
             ElevatedButton(
                 onPressed: () async {
                   Position position = await _getGeoLocationPosition();
@@ -176,12 +177,12 @@ class _ReportIncidentsState extends State<ReportIncidents> {
                 },
                 child: Text('Get Location')),
             Text('${address}'),
-            SizedBox(height: 10),
+            SizedBox(height: 3),
             if (imageFile != null) //from here
 
               Container(
                 width: 300,
-                height: 200,
+                height: 190,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   image: DecorationImage(image: FileImage(imageFile!)),
@@ -190,7 +191,7 @@ class _ReportIncidentsState extends State<ReportIncidents> {
             else
               Container(
                 width: 300,
-                height: 200,
+                height: 190,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: Colors.grey,
