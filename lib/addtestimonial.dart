@@ -1,9 +1,10 @@
+import 'package:completereport/viewreport.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 // ignore: unnecessary_import
 import 'dart:ui';
-
 import 'testimonialModel.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class AddTestimonial extends StatefulWidget {
   const AddTestimonial({Key? key}) : super(key: key);
@@ -30,9 +31,13 @@ class _AddTestimonial extends State<AddTestimonial> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          AppBar(title: const Text('Testimonial'), backgroundColor: Colors.red),
+      appBar: AppBar(
+        title: const Text('Testimonial'),
+        backgroundColor: Colors.red,
+        centerTitle: true,
+      ),
       body: Container(
+        color: Colors.grey.shade300,
         width: double.infinity,
         height: double.infinity,
         padding: const EdgeInsets.all(32),
@@ -116,6 +121,10 @@ class _AddTestimonial extends State<AddTestimonial> {
                     onPressed: () async {
                       DataModel? data =
                           await submitData(testimonialController, selectedName);
+                      Fluttertoast.showToast(
+                          msg: ' Testimony saved',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM);
 
                       setState(() {
                         _dataModel = data;
@@ -130,6 +139,16 @@ class _AddTestimonial extends State<AddTestimonial> {
                     }),
               ),
             ),
+            //Code for navigation button added by ofentse on falicia code
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => DataFromAPI()));
+              },
+              child: Text('View Report =>'),
+            ),
+            //Until here
           ],
         ),
       ),

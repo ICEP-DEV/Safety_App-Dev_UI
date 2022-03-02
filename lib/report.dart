@@ -112,6 +112,7 @@ class _ReportIncidentsState extends State<ReportIncidents> {
         title: Text("Please complete Report Form"),
         centerTitle: true,
       ),
+      backgroundColor: Colors.grey.shade300,
       floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.red[700],
           child: Text(
