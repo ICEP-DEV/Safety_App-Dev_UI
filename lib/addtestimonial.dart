@@ -1,3 +1,4 @@
+import 'package:completereport/register.dart';
 import 'package:completereport/viewreport.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -149,6 +150,13 @@ class _AddTestimonial extends State<AddTestimonial> {
               child: Text('View Report =>'),
             ),
             //Until here
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => RegisterAccount()));
+              },
+              child: Text('Register account =>'),
+            ),
           ],
         ),
       ),
@@ -160,7 +168,7 @@ String? selectedName;
 
 Future<DataModel?> submitData(
     TextEditingController controller, selectedName) async {
-  var response = await http.post(Uri.http('10.0.2.2:5001', '/post/'), body: {
+  var response = await http.post(Uri.http('10.0.2.2:5001', 'post'), body: {
     "testimonial_descr": controller.text,
     "testimonial_date": DateTime.now().toString(),
     "user": selectedName.toString(),

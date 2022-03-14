@@ -240,8 +240,10 @@ class _ReportIncidentsState extends State<ReportIncidents> {
                 SizedBox(width: 7),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => RequestChat()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ButtonScreen()));
                   },
                   child: Text('Request Chat =>'),
                 ),
@@ -268,7 +270,7 @@ class _ReportIncidentsState extends State<ReportIncidents> {
       String img, TextEditingController controller) async {
     HttpOverrides.global = new MyHttpOverrides();
     var response =
-        await http.post(Uri.http('10.0.2.2:5001', 'reportincident'), body: {
+        await http.post(Uri.http('10.0.2.2:5001', '/reportincident'), body: {
       "dateTime": DateTime.now().toString(),
       "incidentType": selectedCrime,
       "incident_desc": _controller.text,

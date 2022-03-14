@@ -41,7 +41,7 @@ class _DataFromAPIState extends State<DataFromAPI> {
               if (snapshot.data == null) {
                 return Container(
                   child: Center(
-                    child: Text("loading.."),
+                    child: Text("No data"),
                   ),
                 );
               } else
