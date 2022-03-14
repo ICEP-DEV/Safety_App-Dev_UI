@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(v_chat2 LANGUAGES CXX)
+project(chats_s LANGUAGES CXX)
 
-set(BINARY_NAME "v_chat2")
+set(BINARY_NAME "chats_s")
 
 cmake_policy(SET CMP0063 NEW)
 
