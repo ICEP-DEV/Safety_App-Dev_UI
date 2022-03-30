@@ -1,12 +1,12 @@
+import 'package:completereport/User_Request_Chat/chat_page.dart';
 import 'package:flutter/material.dart';
-
-import 'home_screen.dart';
 
 class ButtonScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.red, title: Text("Chat Request")),
+      appBar: AppBar(
+          backgroundColor: Colors.red, title: const Text("Chat Request")),
       body: Center(
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
@@ -15,9 +15,13 @@ class ButtonScreen extends StatelessWidget {
           ), // foreground
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomeScreen()));
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatPage(),
+              ),
+            );
           },
-          child: Text(
+          child: const Text(
             'Request Chat',
           ),
         ),
