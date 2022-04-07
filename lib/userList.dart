@@ -1,20 +1,93 @@
-import 'dart:convert';
+import 'package:chats_s/Model/contacts_model.dart';
+import 'package:chats_s/Model/message_model.dart';
 import 'package:chats_s/ownMessageCard.dart';
 import 'package:chats_s/replyCard.dart';
-import 'package:chats_s/Model/chat_model.dart';
-import 'package:chats_s/Model/message_model.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:async';
+
+class userList extends StatefulWidget {
+  const userList({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<userList> createState() => _userListState();
+}
+
+class _userListState extends State<userList> {
+  Future<List<ContactsModel>?> _getUsers() async {
+    final Uri uri = Uri.parse("http://10.0.2.2:5001/api/contacts");
+    var data = await http.get(uri);
+    var jsonData = json.decode(data.body);
+
+    List<ContactsModel> users = [];
+
+    for (var u in jsonData) {
+      ContactsModel user =
+          ContactsModel(u["id"], u["name"], u["surname"], u["user_id"]);
+      users.add(user);
+    }
+    print(users.length);
+    return users;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: FutureBuilder(
+        future: _getUsers(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.data == null) {
+            return Container(
+                child: const Center(
+              child: Text("Please wait Loading..."),
+            ));
+          } else {
+            return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    leading: const CircleAvatar(
+                      backgroundImage: NetworkImage(
+                          "https://images.pexels.com/photos/2659177/pexels-photo-2659177.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"),
+                    ),
+                    title: Text(snapshot.data[index].name +
+                        "" +
+                        snapshot.data[index].surname +
+                        "    " +
+                        snapshot.data[index].user_id),
+                    subtitle: Text(
+                      snapshot.data[index].id.toString(),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => IndividualPage(
+                                user: snapshot.data[index],
+                                sourceChat: snapshot.data[index]),
+                          ));
+                    },
+                  );
+                });
+          }
+        },
+      ),
+    );
+  }
+}
 
 class IndividualPage extends StatefulWidget {
-  const IndividualPage(
-      {Key? key, required this.chatModel, required this.sourchat})
+  const IndividualPage({Key? key, required this.user, required this.sourceChat})
       : super(key: key);
-  final ChatModel chatModel;
-  final ChatModel sourchat;
+
+  final ContactsModel sourceChat;
+  final ContactsModel user;
 
   @override
   _IndividualPageState createState() => _IndividualPageState();
@@ -25,8 +98,8 @@ class _IndividualPageState extends State<IndividualPage> {
   FocusNode focusNode = FocusNode();
   bool sendButton = false;
   List<MessageModel> messages = [];
-  TextEditingController _controller = TextEditingController();
-  ScrollController _scrollController = ScrollController();
+  final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
   late IO.Socket socket;
   @override
   void initState() {
@@ -44,20 +117,19 @@ class _IndividualPageState extends State<IndividualPage> {
   }
 
   void connect() {
-    // MessageModel messageModel = MessageModel(sourceId: widget.sourceChat.id.toString(),targetId: );
     socket = IO.io("http://192.168.0.106:5001", <String, dynamic>{
       "transports": ["websocket"],
       "autoConnect": false,
     });
     socket.connect();
-    socket.emit("signin", widget.sourchat.id);
+    socket.emit("signin", widget.sourceChat.id);
     socket.onConnect((data) {
       print("Connected");
       socket.on("message", (msg) {
         print(msg);
         setMessage("destination", msg["message"]);
         _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-            duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+            duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
       });
     });
     print(socket.connected);
@@ -85,16 +157,10 @@ class _IndividualPageState extends State<IndividualPage> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Image.asset(
-          "assets/whatsapp_Back.png",
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          fit: BoxFit.cover,
-        ),
         Scaffold(
           backgroundColor: Colors.transparent,
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(60),
+            preferredSize: const Size.fromHeight(60),
             child: AppBar(
               backgroundColor: Colors.red,
               leadingWidth: 70,
@@ -105,22 +171,10 @@ class _IndividualPageState extends State<IndividualPage> {
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: const [
                     Icon(
                       Icons.arrow_back,
                       size: 24,
-                    ),
-                    CircleAvatar(
-                      child: SvgPicture.asset(
-                        widget.chatModel.isGroup
-                            ? "assets/groups.svg"
-                            : "assets/person.svg",
-                        color: Colors.white,
-                        height: 36,
-                        width: 36,
-                      ),
-                      radius: 20,
-                      backgroundColor: Colors.blueGrey,
                     ),
                   ],
                 ),
@@ -128,19 +182,19 @@ class _IndividualPageState extends State<IndividualPage> {
               title: InkWell(
                 onTap: () {},
                 child: Container(
-                  margin: EdgeInsets.all(6),
+                  margin: const EdgeInsets.all(6),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.chatModel.name,
-                        style: TextStyle(
+                        widget.user.user_id,
+                        style: const TextStyle(
                           fontSize: 18.5,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(
+                      const Text(
                         "last seen today at 12:05",
                         style: TextStyle(
                           fontSize: 13,
@@ -151,36 +205,36 @@ class _IndividualPageState extends State<IndividualPage> {
                 ),
               ),
               actions: [
-                IconButton(icon: Icon(Icons.videocam), onPressed: () {}),
-                IconButton(icon: Icon(Icons.call), onPressed: () {}),
+                IconButton(icon: const Icon(Icons.videocam), onPressed: () {}),
+                IconButton(icon: const Icon(Icons.call), onPressed: () {}),
                 PopupMenuButton<String>(
-                  padding: EdgeInsets.all(0),
+                  padding: const EdgeInsets.all(0),
                   onSelected: (value) {
                     print(value);
                   },
                   itemBuilder: (BuildContext contesxt) {
                     return [
-                      PopupMenuItem(
+                      const PopupMenuItem(
                         child: Text("View Contact"),
                         value: "View Contact",
                       ),
-                      PopupMenuItem(
+                      const PopupMenuItem(
                         child: Text("Media, links, and docs"),
                         value: "Media, links, and docs",
                       ),
-                      PopupMenuItem(
-                        child: Text("Whatsapp Web"),
-                        value: "Whatsapp Web",
+                      const PopupMenuItem(
+                        child: Text(" Connect PC"),
+                        value: "Connect PC",
                       ),
-                      PopupMenuItem(
+                      const PopupMenuItem(
                         child: Text("Search"),
                         value: "Search",
                       ),
-                      PopupMenuItem(
+                      const PopupMenuItem(
                         child: Text("Mute Notification"),
                         value: "Mute Notification",
                       ),
-                      PopupMenuItem(
+                      const PopupMenuItem(
                         child: Text("Wallpaper"),
                         value: "Wallpaper",
                       ),
@@ -197,7 +251,6 @@ class _IndividualPageState extends State<IndividualPage> {
               child: Column(
                 children: [
                   Expanded(
-                    // height: MediaQuery.of(context).size.height - 150,
                     child: ListView.builder(
                       shrinkWrap: true,
                       controller: _scrollController,
@@ -233,7 +286,7 @@ class _IndividualPageState extends State<IndividualPage> {
                               Container(
                                 width: MediaQuery.of(context).size.width - 60,
                                 child: Card(
-                                  margin: EdgeInsets.only(
+                                  margin: const EdgeInsets.only(
                                       left: 2, right: 2, bottom: 8),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(25),
@@ -246,7 +299,7 @@ class _IndividualPageState extends State<IndividualPage> {
                                     maxLines: 5,
                                     minLines: 1,
                                     onChanged: (value) {
-                                      if (value.length > 0) {
+                                      if (value.isNotEmpty) {
                                         setState(() {
                                           sendButton = true;
                                         });
@@ -259,7 +312,8 @@ class _IndividualPageState extends State<IndividualPage> {
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       hintText: "Type a message",
-                                      hintStyle: TextStyle(color: Colors.grey),
+                                      hintStyle:
+                                          const TextStyle(color: Colors.grey),
                                       prefixIcon: IconButton(
                                         icon: Icon(
                                           show
@@ -280,7 +334,7 @@ class _IndividualPageState extends State<IndividualPage> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           IconButton(
-                                            icon: Icon(Icons.attach_file),
+                                            icon: const Icon(Icons.attach_file),
                                             onPressed: () {
                                               showModalBottomSheet(
                                                   backgroundColor:
@@ -291,18 +345,12 @@ class _IndividualPageState extends State<IndividualPage> {
                                             },
                                           ),
                                           IconButton(
-                                            icon: Icon(Icons.camera_alt),
-                                            onPressed: () {
-                                              // Navigator.push(
-                                              //     context,
-                                              //     MaterialPageRoute(
-                                              //         builder: (builder) =>
-                                              //             CameraApp()));
-                                            },
+                                            icon: const Icon(Icons.camera_alt),
+                                            onPressed: () {},
                                           ),
                                         ],
                                       ),
-                                      contentPadding: EdgeInsets.all(5),
+                                      contentPadding: const EdgeInsets.all(5),
                                     ),
                                   ),
                                 ),
@@ -315,7 +363,7 @@ class _IndividualPageState extends State<IndividualPage> {
                                 ),
                                 child: CircleAvatar(
                                   radius: 25,
-                                  backgroundColor: Color(0xFF128C7E),
+                                  backgroundColor: const Color(0xFF128C7E),
                                   child: IconButton(
                                     icon: Icon(
                                       sendButton ? Icons.send : Icons.mic,
@@ -326,13 +374,13 @@ class _IndividualPageState extends State<IndividualPage> {
                                         _scrollController.animateTo(
                                             _scrollController
                                                 .position.maxScrollExtent,
-                                            duration:
-                                                Duration(milliseconds: 300),
+                                            duration: const Duration(
+                                                milliseconds: 300),
                                             curve: Curves.easeOut);
                                         sendMessage(
                                             _controller.text,
-                                            widget.sourchat.id,
-                                            widget.chatModel.id);
+                                            widget.sourceChat.id,
+                                            widget.user.id);
                                         DataModel? data =
                                             await submitData(_controller);
                                         _dataModel = data;
@@ -431,19 +479,17 @@ class _IndividualPageState extends State<IndividualPage> {
             backgroundColor: color,
             child: Icon(
               icons,
-              // semanticLabel: "Help",
               size: 29,
               color: Colors.white,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
-              // fontWeight: FontWeight.w100,
             ),
           )
         ],
@@ -485,7 +531,7 @@ Future<DataModel?> submitData(
   TextEditingController _controller,
 ) async {
   var response =
-      await http.post(Uri.http('10.0.2.2:5001', '/api/postchat/'), body: {
+      await http.post(Uri.http('10.0.2.2:5001', '/api/post/'), body: {
     "dateTime": DateTime.now().toString(),
     "description": _controller.text,
   });
