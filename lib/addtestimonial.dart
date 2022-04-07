@@ -147,7 +147,7 @@ class _AddTestimonial extends State<AddTestimonial> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => DataFromAPI()));
               },
-              child: Text('View Report =>'),
+              child: Text('View Report '),
             ),
             //Until here
             ElevatedButton(
@@ -155,7 +155,7 @@ class _AddTestimonial extends State<AddTestimonial> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => RegisterAccount()));
               },
-              child: Text('Register account =>'),
+              child: Text('Register account '),
             ),
           ],
         ),

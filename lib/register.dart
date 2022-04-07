@@ -2,9 +2,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gcloud/pubsub.dart';
+import 'otp.dart';
 import 'registerModel.dart';
 import 'package:http/http.dart' as http;
+import 'dart:math';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
 
 class RegisterAccount extends StatefulWidget {
   @override
@@ -23,7 +26,12 @@ class _RegisterAccountState extends State<RegisterAccount> {
   String address = "";
   String select_gender = "Male";
   String databaseUserId = "";
-  String message = "aassddd";
+  String message = "";
+  String randomNumber1 = 'x';
+  String randomNumber2 = 'y';
+  String randomNumber3 = 'z';
+  String randomNumber4 = 'j';
+  String otp = "";
 
   final List<String> gender = ["Male", "Female"];
   bool _obscureText = true;
@@ -175,6 +183,10 @@ class _RegisterAccountState extends State<RegisterAccount> {
       validator: (String? value) {
         if (value!.isEmpty) {
           return "your contact details is Required";
+        } else if (value.length != 10) {
+          return "Incorrect contact details , Enter valid south african contacts";
+        } else if (value[0] != "0" || value[1] == "0") {
+          return "Incorrect contact details , Enter valid South African contacts";
         }
       },
       onSaved: (String? value) {
@@ -184,6 +196,11 @@ class _RegisterAccountState extends State<RegisterAccount> {
   }
 
   Widget _buildStaffStudent() {
+    randomNumber1 = (Random().nextInt(9) + 1).toString();
+    randomNumber2 = (Random().nextInt(9) + 1).toString();
+    randomNumber3 = (Random().nextInt(9) + 1).toString();
+    randomNumber4 = (Random().nextInt(9) + 1).toString();
+    otp = randomNumber1 + randomNumber2 + randomNumber3 + randomNumber4;
     return TextFormField(
       decoration: InputDecoration(
         prefixIcon: Icon(Icons.add_task),
@@ -216,6 +233,46 @@ class _RegisterAccountState extends State<RegisterAccount> {
         otherPhoneNumber = value!;
       },
     );
+  }
+
+  //email otp code
+  email_otp() async {
+    String username = 'molepollefentse121@gmail.com';
+    String password = 'fefe@121';
+
+    final smtpServer = gmail(username, password);
+    // Use the SmtpServer class to configure an SMTP server:
+    // final smtpServer = SmtpServer('smtp.domain.com');
+    // See the named arguments of SmtpServer for further configuration
+    // options.
+
+    // Create our message.
+    final message = Message()
+      ..from = Address(username, 'Safety App')
+      ..recipients.add(email)
+      // ..ccRecipients.addAll(['destCc1@example.com', 'destCc2@example.com'])
+      // ..bccRecipients.add(Address('bccAddress@example.com'))
+      ..subject = 'OTP PIN ::  ${DateTime.now()}'
+      // ..text = 'This is the plain text.\nThis is line 2 of the text part.'
+      ..html =
+          "<h4>OTP PIN FOR SAFETY APP</h4>\n<p>your OTP pin is  ${otp}</p>"; // body of email
+
+    try {
+      final sendReport = await send(message, smtpServer);
+
+      print(
+          'email sent: ' + sendReport.toString()); //print if the email is sent
+      Fluttertoast.showToast(
+          msg: 'email sent',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM);
+    } on MailerException catch (e) {
+      print('email not sent. \n' + e.toString());
+      Fluttertoast.showToast(
+          msg: 'email not sent',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM);
+    }
   }
 
   @override
@@ -286,6 +343,7 @@ class _RegisterAccountState extends State<RegisterAccount> {
                         address,
                         phoneNumber,
                         email,
+                        otp,
                         password);
                     setState(() {
                       _dataMOdel = data!;
@@ -309,9 +367,10 @@ class _RegisterAccountState extends State<RegisterAccount> {
       String address,
       String phoneNumber,
       String email,
+      String otp,
       String password) async {
     var response =
-        await http.post(Uri.http('10.0.2.2:5000', 'auth_reg'), body: {
+        await http.post(Uri.http('10.0.2.2:5001', 'user/auth_reg'), body: {
       "surname": surname,
       "name": name,
       "other_contact": otherPhoneNumber,
@@ -320,20 +379,56 @@ class _RegisterAccountState extends State<RegisterAccount> {
       "address": address,
       "trusted_contact": phoneNumber,
       "email": email,
+      "otp": otp,
       "password": password,
     });
     var data = response.body.toString();
     message = data;
+    print("OTP is " + otp);
+    print(data);
+    print(response.statusCode);
 
-    //print(notifyMessage);
-    Fluttertoast.showToast(
-        msg: 'successfully registered an account',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM);
+    if (RegExp('User already registered').hasMatch(data)) {
+      final text = 'User already registered';
+      final snackBar = SnackBar(
+        duration: Duration(minutes: 3),
+        content: Text(text),
+        action: SnackBarAction(
+          label: 'Dismiss',
+          onPressed: () {},
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else if (RegExp('User is not registered for 2022 ').hasMatch(data)) {
+      final text = 'User is not registered with TUT for 2022';
+      final snackBar = SnackBar(
+        duration: Duration(minutes: 3),
+        content: Text(text),
+        action: SnackBarAction(
+          label: 'Dismiss',
+          onPressed: () {},
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      final text = 'Account registered';
+      final snackBar = SnackBar(content: Text(text));
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      email_otp();
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => OTP(
+                    otp: otp,
+                    email: email,
+                  )));
+    }
+
     if (response.statusCode == 200) {
       String responseString = response.body;
-
-      dataModelFromJson(responseString);
+      message = responseString;
+      dataModelFromJson(message);
     }
   }
 }

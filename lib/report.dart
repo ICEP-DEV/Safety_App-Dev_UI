@@ -235,7 +235,7 @@ class _ReportIncidentsState extends State<ReportIncidents> {
                         MaterialPageRoute(
                             builder: (context) => AddTestimonial()));
                   },
-                  child: Text('Testimonial =>'),
+                  child: Text('Testimonial'),
                 ),
                 SizedBox(width: 7),
                 ElevatedButton(
@@ -245,7 +245,7 @@ class _ReportIncidentsState extends State<ReportIncidents> {
                         MaterialPageRoute(
                             builder: (context) => ButtonScreen()));
                   },
-                  child: Text('Request Chat =>'),
+                  child: Text('Request Chat'),
                 ),
               ],
             )

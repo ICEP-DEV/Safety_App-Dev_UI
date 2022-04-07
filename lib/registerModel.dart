@@ -13,6 +13,7 @@ class DataModel {
     required this.address,
     required this.trusted_contact,
     required this.email,
+    required this.otp,
     required this.password,
   });
 
@@ -24,6 +25,7 @@ class DataModel {
   String address;
   String trusted_contact;
   String email;
+  String otp;
   String password;
 
   factory DataModel.fromJson(Map<String, dynamic> json) => DataModel(
@@ -35,6 +37,7 @@ class DataModel {
         address: json["address"],
         trusted_contact: json["trusted_contact"],
         email: json["email"],
+        otp: json["otp"],
         password: json["password"],
       );
   Map<String, dynamic> toJson() => {
@@ -46,6 +49,7 @@ class DataModel {
         "address": address,
         "trusted_contact": trusted_contact,
         "email": email,
+        "otp": otp,
         "password": password,
       };
 }

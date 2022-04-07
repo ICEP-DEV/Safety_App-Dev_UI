@@ -34,7 +34,7 @@ class _DataFromAPIState extends State<DataFromAPI> {
         color: Colors.grey.shade300,
         //from here
         child: Card(
-          color: Colors.grey.shade300,
+          color: Colors.grey.shade300,  
           child: FutureBuilder(
             future: getReportedData(),
             builder: (context, AsyncSnapshot snapshot) {

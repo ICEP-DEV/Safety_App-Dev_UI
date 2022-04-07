@@ -485,7 +485,7 @@ Future<DataModel?> submitData(
   TextEditingController _controller,
 ) async {
   var response =
-      await http.post(Uri.http('10.0.2.2:5001', '/api/postchat/'), body: {
+      await http.post(Uri.http('10.0.2.2:5001', '/api/post/'), body: {
     "dateTime": DateTime.now().toString(),
     "description": _controller.text,
   });
