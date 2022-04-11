@@ -9,6 +9,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'api.dart';
+import 'dataModel.dart';
 
 class ReportIncidents extends StatefulWidget {
   const ReportIncidents({Key? key}) : super(key: key);
@@ -94,7 +95,7 @@ class _ReportIncidentsState extends State<ReportIncidents> {
 //upload to google cloud
     final response = await api.save(_imageName!, imageBytes!);
     print(response.downloadLink);
-    img = response.toString();
+    img = response.downloadLink.toString();
     Fluttertoast.showToast(
         msg: ' image saved',
         toastLength: Toast.LENGTH_SHORT,
@@ -104,13 +105,14 @@ class _ReportIncidentsState extends State<ReportIncidents> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[700],
       appBar: AppBar(
-        title: Text("Reporting Incidents"),
+        backgroundColor: Colors.red[700],
+        title: Text("Please complete Report Form"),
         centerTitle: true,
       ),
+      backgroundColor: Colors.grey.shade300,
       floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.red[700],
           child: Text(
             'Report',
             style: TextStyle(color: Colors.white),
@@ -140,7 +142,7 @@ class _ReportIncidentsState extends State<ReportIncidents> {
             DropdownButton<String>(
               isExpanded: true,
               iconSize: 36,
-              iconEnabledColor: Colors.red,
+              iconEnabledColor: Colors.red[700],
               value: selectedCrime,
               onChanged: (value) {
                 setState(() {
@@ -159,13 +161,14 @@ class _ReportIncidentsState extends State<ReportIncidents> {
             TextField(
               controller: _controller,
               decoration: InputDecoration(
-                hintText: "Describe Incident",
-                labelText: "Description",
+                hintText: "type here",
+                labelText: "Tell your story",
                 labelStyle: TextStyle(fontSize: 18, color: Colors.black),
                 border: OutlineInputBorder(),
               ),
             ),
             SizedBox(height: 20),
+
             ElevatedButton(
                 onPressed: () async {
                   Position position = await _getGeoLocationPosition();
@@ -176,12 +179,12 @@ class _ReportIncidentsState extends State<ReportIncidents> {
                 },
                 child: Text('Get Location')),
             Text('${address}'),
-            SizedBox(height: 10),
+            SizedBox(height: 3),
             if (imageFile != null) //from here
 
               Container(
                 width: 300,
-                height: 200,
+                height: 190,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   image: DecorationImage(image: FileImage(imageFile!)),
@@ -190,10 +193,9 @@ class _ReportIncidentsState extends State<ReportIncidents> {
             else
               Container(
                 width: 300,
-                height: 200,
+                height: 190,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: Colors.grey,
                   border: Border.all(width: 8, color: Colors.black54),
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -208,19 +210,20 @@ class _ReportIncidentsState extends State<ReportIncidents> {
                 Expanded(
                     child: ElevatedButton(
                   onPressed: () => getImage(source: ImageSource.camera),
-                  child: Text('capture img'),
+                  child: Text('Capture '),
                 )),
                 SizedBox(width: 5),
                 Expanded(
                     child: ElevatedButton(
                   onPressed: () => getImage(source: ImageSource.gallery),
-                  child: Text('Select img'),
+                  child: Text('Gallary'),
                 )),
-                SizedBox(width: 5),
+                SizedBox(width: 7),
                 ElevatedButton(
                     onPressed: () => _saveImage(), child: Text('save img')),
               ],
             ), //until here
+            SizedBox(height: 30),
           ]),
         ),
       ),
@@ -242,7 +245,7 @@ class _ReportIncidentsState extends State<ReportIncidents> {
       String img, TextEditingController controller) async {
     HttpOverrides.global = new MyHttpOverrides();
     var response =
-        await http.post(Uri.http('10.0.2.2:5001', 'reportincident'), body: {
+        await http.post(Uri.http('10.0.2.2:5001', '/reportincident'), body: {
       "dateTime": DateTime.now().toString(),
       "incidentType": selectedCrime,
       "incident_desc": _controller.text,
@@ -250,6 +253,7 @@ class _ReportIncidentsState extends State<ReportIncidents> {
       "image": img,
     });
     var data = response.body;
+
     print(data);
     Fluttertoast.showToast(
         msg: 'Report sent',
@@ -257,7 +261,7 @@ class _ReportIncidentsState extends State<ReportIncidents> {
         gravity: ToastGravity.BOTTOM);
     if (response.statusCode == 200) {
       String responseString = response.body;
-      dataModeFromJson(responseString);
+      dataMode_FromJson(responseString);
     }
   }
 }

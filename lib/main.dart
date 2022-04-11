@@ -1,7 +1,7 @@
 import 'dart:io';
-
 import 'package:completereport/report.dart';
 import 'package:flutter/material.dart';
+import 'Home/main_home.dart';
 
 void main() {
   HttpOverrides.global = new MyHttpOverrides();
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.red,
       ),
-      home: ReportIncidents(),
+      home: MainHome(),
     );
   }
 }
