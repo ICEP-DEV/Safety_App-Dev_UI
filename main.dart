@@ -1,3 +1,4 @@
+import 'package:chats_s/Model/button.dart';
 import 'package:chats_s/userList.dart';
 import 'package:flutter/material.dart';
 
@@ -5,7 +6,6 @@ import 'dart:convert';
 import 'package:chats_s/Model/contacts_model.dart';
 import 'package:chats_s/ownMessageCard.dart';
 import 'package:chats_s/replyCard.dart';
-import 'package:chats_s/Model/chat_model.dart';
 import 'package:chats_s/Model/message_model.dart';
 import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +25,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const userList());
+        home: ButtonScreen());
   }
 }
