@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'dart:io';
 
-DataModel dataMode_FromJson(String str) => DataModel.fromJson(json.decode(str));
+DataModel dataModeFromJson(String str) => DataModel.fromJson(json.decode(str));
 
 class DataModel {
   DataModel(
