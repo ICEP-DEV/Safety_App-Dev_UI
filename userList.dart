@@ -21,19 +21,26 @@ class userList extends StatefulWidget {
 
 class _userListState extends State<userList> {
   Future<List<ContactsModel>?> _getUsers() async {
-    final Uri uri = Uri.parse("http://10.0.2.2:5001/api/contacts");
-    var data = await http.get(uri);
+    var data = await http.get(Uri.http('10.0.2.2:5001', '/api/contacts'));
     var jsonData = json.decode(data.body);
 
-    List<ContactsModel> users = [];
-
-    for (var u in jsonData) {
-      ContactsModel user =
-          ContactsModel(u["id"], u["name"], u["surname"], u["user_id"]);
-      users.add(user);
+    List<ContactsModel> contacts = [];
+    for (var item in jsonData) {
+      ContactsModel contact = ContactsModel(
+          user_id: item['user_id'].toString(),
+          id: item['id'],
+          name: item['name'],
+          surname: item['surname']);
+      contacts.add(contact);
     }
-    print(users.length);
-    return users;
+    print(contacts.length);
+    return contacts;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getUsers();
   }
 
   @override
@@ -188,7 +195,7 @@ class _IndividualPageState extends State<IndividualPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.user.user_id,
+                        widget.user.user_id.toString(),
                         style: const TextStyle(
                           fontSize: 18.5,
                           fontWeight: FontWeight.bold,
