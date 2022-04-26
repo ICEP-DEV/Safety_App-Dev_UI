@@ -1,4 +1,5 @@
 import 'package:completereport/Home/vechome.dart';
+import 'package:completereport/Information%20Center/vec_information_center.dart';
 import 'package:completereport/viewreport.dart';
 import 'package:flutter/material.dart';
 
@@ -57,7 +58,12 @@ class _VECTunnelState extends State<VECTunnel> {
               ),
               SizedBox(height: 10),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => VEC_Information_Center()));
+                },
                 child: Text('Information Center'),
                 style: ElevatedButton.styleFrom(
                     fixedSize: Size(250, 50),

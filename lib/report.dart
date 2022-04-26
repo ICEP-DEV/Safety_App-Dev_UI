@@ -166,6 +166,9 @@ class _ReportIncidentsState extends State<ReportIncidents> {
                 labelStyle: TextStyle(fontSize: 18, color: Colors.black),
                 border: OutlineInputBorder(),
               ),
+              keyboardType: TextInputType.multiline,
+              minLines: 2,
+              maxLines: 200,
             ),
             SizedBox(height: 20),
 
@@ -216,7 +219,7 @@ class _ReportIncidentsState extends State<ReportIncidents> {
                 Expanded(
                     child: ElevatedButton(
                   onPressed: () => getImage(source: ImageSource.gallery),
-                  child: Text('Gallary'),
+                  child: Text('Gallery'),
                 )),
                 SizedBox(width: 7),
                 ElevatedButton(
