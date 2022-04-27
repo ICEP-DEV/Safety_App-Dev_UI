@@ -1,28 +1,24 @@
-import 'dart:ffi';
-
-import 'package:badges/badges.dart';
-import 'package:chat_ui/SocketIOChat/ChatUserScreen.dart';
-import 'package:chat_ui/SocketIOChat/Global.dart';
-import 'package:chat_ui/SocketIOChat/User.dart';
 import 'package:flutter/material.dart';
+import 'package:user_chat_ui/ChatUserScreen.dart';
+import 'package:user_chat_ui/user.dart';
+import 'Global.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  //
+  LoginScreen() : super();
 
   static const String ROUTE_ID = 'login_screen';
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  //
   late TextEditingController _usernameController;
-
-  int countContacts = 95;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _usernameController = TextEditingController();
     G.initDummyUsers();
@@ -45,7 +41,10 @@ class _LoginScreenState extends State<LoginScreen> {
               textAlign: TextAlign.center,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(6.0))),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5.0),
+                  ),
+                ),
                 filled: true,
                 fillColor: Colors.white,
                 contentPadding: EdgeInsets.all(20.0),
@@ -54,34 +53,36 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: 20.0,
             ),
-            Badge(
-                badgeContent: Text('$countContacts'),
-                child: OutlinedButton(
-                  child: Text('View Chats'),
-                  onPressed: () {
-                    _LoginBtnTap();
-                  },
-                ))
+            OutlineButton(
+                child: Text('LOGIN'),
+                onPressed: () {
+                  _loginBtnTap();
+                })
           ],
         ),
       ),
     );
   }
 
-  _LoginBtnTap() {
+  _loginBtnTap() async {
     if (_usernameController.text.isEmpty) {
       return;
-    } else {
-      User me = G.dummyUsers[0];
-      if (_usernameController.text != 'vec') {
-        me = G.dummyUsers[1];
-      }
-      G.loggedInUser = me;
-      _openChatUserListScreen(context);
     }
+
+    User me = G.dummyUsers[0];
+    if (_usernameController.text != 'a') {
+      me = G.dummyUsers[1];
+    }
+
+    G.loggedInUser = me;
+
+    openHomeScreen(context);
   }
 
-  _openChatUserListScreen(context) async {
-    await Navigator.pushReplacementNamed(context, ChatUserScreen.ROUTE_ID);
+  static openHomeScreen(BuildContext context) async {
+    await Navigator.pushReplacementNamed(
+      context,
+      ChatUsersScreen.ROUTE_ID,
+    );
   }
 }

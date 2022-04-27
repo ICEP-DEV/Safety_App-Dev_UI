@@ -1,16 +1,16 @@
-import 'package:chat_ui/SocketIOChat/User.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-enum UserOnlineStatus { connecting, online, not_online }
+import 'package:user_chat_ui/ChatScreen.dart';
+import 'package:user_chat_ui/user.dart';
 
 class ChatTitle extends StatelessWidget {
+  //
   const ChatTitle({
     Key? key,
-    required this.toChatUser,
+    required this.chatUser,
     required this.userOnlineStatus,
-  });
-  final User toChatUser;
+  }) : super(key: key);
+
+  final User chatUser;
   final UserOnlineStatus userOnlineStatus;
 
   @override
@@ -20,7 +20,7 @@ class ChatTitle extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Text(toChatUser.name),
+          Text(chatUser.name),
           Text(
             _getStatusText(),
             style: TextStyle(
@@ -34,12 +34,14 @@ class ChatTitle extends StatelessWidget {
   }
 
   _getStatusText() {
+    if (userOnlineStatus == UserOnlineStatus.connecting) {
+      return 'connecting...';
+    }
     if (userOnlineStatus == UserOnlineStatus.online) {
       return 'online';
     }
     if (userOnlineStatus == UserOnlineStatus.not_online) {
       return 'not online';
     }
-    return 'connecting...';
   }
 }

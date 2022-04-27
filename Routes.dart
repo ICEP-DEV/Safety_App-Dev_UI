@@ -1,12 +1,12 @@
-import 'package:chat_ui/SocketIOChat/ChatScreen.dart';
-import 'package:chat_ui/SocketIOChat/ChatUserScreen.dart';
-import 'package:chat_ui/SocketIOChat/LoginScreen.dart';
+import 'package:user_chat_ui/ChatScreen.dart';
+import 'package:user_chat_ui/ChatUserScreen.dart';
+import 'package:user_chat_ui/loginScreen.dart';
 
 class Routes {
   static routes() {
     return {
       LoginScreen.ROUTE_ID: (context) => LoginScreen(),
-      ChatUserScreen.ROUTE_ID: (context) => ChatUserScreen(),
+      ChatUsersScreen.ROUTE_ID: (context) => ChatUsersScreen(),
       ChatScreen.ROUTE_ID: (context) => ChatScreen(),
     };
   }

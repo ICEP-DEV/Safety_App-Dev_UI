@@ -1,5 +1,5 @@
-import 'package:chat_ui/SocketIOChat/Routes.dart';
 import 'package:flutter/material.dart';
+import 'package:user_chat_ui/Routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,8 +7,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,7 +15,7 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       routes: Routes.routes(),
-      initialRoute: Routes.initScreen(),
+      initialRoute: Routes.initScreen(), // Route to Login Screen
     );
   }
 }
