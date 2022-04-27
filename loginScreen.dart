@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:user_chat_ui/ChatUserScreen.dart';
-import 'package:user_chat_ui/user.dart';
+import 'package:vec_chat_ui/ChatUserScreen.dart';
+import 'package:vec_chat_ui/user.dart';
 import 'Global.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     User me = G.dummyUsers[0];
-    if (_usernameController.text != 'a') {
+    if (_usernameController.text != 'vec') {
       me = G.dummyUsers[1];
     }
 

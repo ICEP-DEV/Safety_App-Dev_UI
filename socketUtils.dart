@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:user_chat_ui/ChatMessageModel.dart';
-import 'package:user_chat_ui/user.dart';
+import 'package:vec_chat_ui/ChatMessageModel.dart';
+import 'package:vec_chat_ui/user.dart';
 import 'package:adhara_socket_io/adhara_socket_io.dart';
 
 class SocketUtils {

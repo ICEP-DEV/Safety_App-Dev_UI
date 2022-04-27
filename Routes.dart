@@ -1,6 +1,6 @@
-import 'package:user_chat_ui/ChatScreen.dart';
-import 'package:user_chat_ui/ChatUserScreen.dart';
-import 'package:user_chat_ui/loginScreen.dart';
+import 'package:vec_chat_ui/ChatScreen.dart';
+import 'package:vec_chat_ui/ChatUserScreen.dart';
+import 'package:vec_chat_ui/loginScreen.dart';
 
 class Routes {
   static routes() {
