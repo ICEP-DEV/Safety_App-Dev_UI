@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vec_chat_ui/ChatScreen.dart';
-import 'package:vec_chat_ui/user.dart';
+import 'package:user_chat_ui/ChatScreen.dart';
+import 'package:user_chat_ui/user.dart';
 
 class ChatTitle extends StatelessWidget {
   //

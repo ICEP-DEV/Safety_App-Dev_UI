@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vec_chat_ui/Routes.dart';
+import 'package:user_chat_ui/Routes.dart';
 
 void main() {
   runApp(const MyApp());

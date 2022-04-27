@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:vec_chat_ui/ChatBubble.dart';
-import 'package:vec_chat_ui/ChatMessageModel.dart';
-import 'package:vec_chat_ui/Global.dart';
-import 'package:vec_chat_ui/socketUtils.dart';
-import 'package:vec_chat_ui/user.dart';
+import 'package:user_chat_ui/ChatBubble.dart';
+import 'package:user_chat_ui/ChatMessageModel.dart';
+import 'package:user_chat_ui/Global.dart';
+import 'package:user_chat_ui/socketUtils.dart';
+import 'package:user_chat_ui/user.dart';
 import 'ChatTitle.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;

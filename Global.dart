@@ -1,5 +1,5 @@
-import 'package:vec_chat_ui/socketUtils.dart';
-import 'package:vec_chat_ui/user.dart';
+import 'package:user_chat_ui/socketUtils.dart';
+import 'package:user_chat_ui/user.dart';
 
 class G {
   // Socket
