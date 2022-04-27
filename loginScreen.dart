@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:vec_chat_ui/ChatUserScreen.dart';
 import 'package:vec_chat_ui/user.dart';
@@ -17,6 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   //
   late TextEditingController _usernameController;
 
+  int countContacts = 95;
   @override
   void initState() {
     super.initState();
@@ -53,11 +55,14 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: 20.0,
             ),
-            OutlineButton(
-                child: Text('LOGIN'),
-                onPressed: () {
-                  _loginBtnTap();
-                })
+            Badge(
+                badgeContent: Text('$countContacts'),
+                child: OutlinedButton(
+                  child: Text('View Chats'),
+                  onPressed: () {
+                    _loginBtnTap();
+                  },
+                ))
           ],
         ),
       ),
