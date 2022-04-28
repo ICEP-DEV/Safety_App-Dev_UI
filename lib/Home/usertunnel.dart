@@ -1,4 +1,5 @@
 import 'package:completereport/Home/userhome.dart';
+import 'package:completereport/Information%20Center/user_typeof_informaton.dart';
 import 'package:completereport/User_Request_Chat/chat_page.dart';
 import 'package:completereport/addtestimonial.dart';
 import 'package:completereport/report.dart';
@@ -45,7 +46,12 @@ class _UserTunnelState extends State<UserTunnel> {
               ),
               SizedBox(height: 10),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TYPEINFORMATION()));
+                },
                 child: Text('Information Center'),
                 style: ElevatedButton.styleFrom(
                     fixedSize: Size(250, 50),

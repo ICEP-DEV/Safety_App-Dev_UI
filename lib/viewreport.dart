@@ -11,7 +11,8 @@ class DataFromAPI extends StatefulWidget {
 
 class _DataFromAPIState extends State<DataFromAPI> {
   Future getReportedData() async {
-    var response = await http.get(Uri.http('10.0.2.2:5001', '/viewreport/'));
+    var response =
+        await http.get(Uri.https('gbv-beta.herokuapp.com', '/viewreport/'));
     var jsonData = jsonDecode(response.body);
     List<Incident> reported_incident = [];
     for (var u in jsonData) {

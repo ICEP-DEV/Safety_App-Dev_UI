@@ -137,8 +137,8 @@ class _VEC_Information_CenterState extends State<VEC_Information_Center> {
 
   // first submit data
   Future<DataModel?> submitData(String information, String title) async {
-    var response =
-        await http.post(Uri.http('10.0.2.2:5001', '/createevent/'), body: {
+    var response = await http
+        .post(Uri.https('gbv-beta.herokuapp.com', '/createevent/'), body: {
       "title": title,
       "type": "event",
       "description": information,
@@ -159,12 +159,13 @@ class _VEC_Information_CenterState extends State<VEC_Information_Center> {
 
   // second submit data
   Future<DataModel?> submitData2(String information, String title) async {
-    var response =
-        await http.post(Uri.http('10.0.2.2:5001', '/createsafetyinfo/'), body: {
+    var response = await http
+        .post(Uri.http('gbv-beta.herokuapp.com', '/createsafetyinfo/'), body: {
       "title": title,
       "type": "safety",
       "description": information,
     });
+
     var data = response.body;
 
     print(data);

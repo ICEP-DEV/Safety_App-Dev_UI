@@ -247,8 +247,8 @@ class _ReportIncidentsState extends State<ReportIncidents> {
   Future<DataModel?> submitData(String selectedCrime, String location,
       String img, TextEditingController controller) async {
     HttpOverrides.global = new MyHttpOverrides();
-    var response =
-        await http.post(Uri.http('10.0.2.2:5001', '/reportincident'), body: {
+    var response = await http
+        .post(Uri.https('gbv-beta.herokuapp.com', '/reportincident/'), body: {
       "dateTime": DateTime.now().toString(),
       "incidentType": selectedCrime,
       "incident_desc": _controller.text,
