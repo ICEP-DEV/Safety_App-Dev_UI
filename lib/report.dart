@@ -118,11 +118,19 @@ class _ReportIncidentsState extends State<ReportIncidents> {
             style: TextStyle(color: Colors.white),
           ),
           onPressed: () async {
-            DataModel? data =
-                await submitData(selectedCrime, location, img, _controller);
-            setState(() {
-              _dataMOdel = data!;
-            });
+            if (imageFile != null) {
+              DataModel? data =
+                  await submitData(selectedCrime, location, img, _controller);
+              setState(() {
+                _dataMOdel = data!;
+              });
+            } else {
+              DataModel? data =
+                  await submitData2(selectedCrime, location, _controller);
+              setState(() {
+                _dataMOdel = data!;
+              });
+            }
           }),
       body: Padding(
         padding: EdgeInsets.all(30),
@@ -246,7 +254,6 @@ class _ReportIncidentsState extends State<ReportIncidents> {
 
   Future<DataModel?> submitData(String selectedCrime, String location,
       String img, TextEditingController controller) async {
-    HttpOverrides.global = new MyHttpOverrides();
     var response = await http
         .post(Uri.https('gbv-beta.herokuapp.com', '/reportincident/'), body: {
       "dateTime": DateTime.now().toString(),
@@ -267,13 +274,26 @@ class _ReportIncidentsState extends State<ReportIncidents> {
       dataMode_FromJson(responseString);
     }
   }
-}
 
-class MyHttpOverrides extends HttpOverrides {
-  @override
-  HttpClient createHttpClient(SecurityContext? context) {
-    return super.createHttpClient(context)
-      ..badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
+  Future<DataModel?> submitData2(String selectedCrime, String location,
+      TextEditingController controller) async {
+    var response = await http
+        .post(Uri.https('gbv-beta.herokuapp.com', '/reportincident/'), body: {
+      "dateTime": DateTime.now().toString(),
+      "incidentType": selectedCrime,
+      "incident_desc": _controller.text,
+      "location": address,
+    });
+    var data = response.body;
+
+    print(data);
+    Fluttertoast.showToast(
+        msg: 'Report sent',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM);
+    if (response.statusCode == 200) {
+      String responseString = response.body;
+      dataMode_FromJson(responseString);
+    }
   }
 }

@@ -16,8 +16,14 @@ class _DataFromAPIState extends State<DataFromAPI> {
     var jsonData = jsonDecode(response.body);
     List<Incident> reported_incident = [];
     for (var u in jsonData) {
-      Incident incident = Incident(u['report_num'], u['dateTime'],
-          u['incidentType'], u['incident_desc'], u['location'], u['image']);
+      Incident incident = Incident(
+        u['report_num'],
+        u['dateTime'],
+        u['incidentType'],
+        u['incident_desc'],
+        u['location'],
+        u["image"],
+      );
       reported_incident.add(incident);
     }
     return reported_incident;
@@ -27,7 +33,7 @@ class _DataFromAPIState extends State<DataFromAPI> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reported Data'),
+        title: Text('View Reported Information'),
         centerTitle: true,
         backgroundColor: Colors.red[700],
       ),
@@ -83,20 +89,28 @@ class _DataFromAPIState extends State<DataFromAPI> {
                             textAlign: TextAlign.center,
                           ),
                           Text(snapshot.data[i].dateTime + "\n"),
-                          Link(
-                            uri: Uri.parse(snapshot.data[i].image),
-                            builder: (context, followLink) => GestureDetector(
-                              onTap: followLink,
-                              child: Text(
-                                'Click this link to check for downloads',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.red,
-                                  decoration: TextDecoration.underline,
+                          if (snapshot.data[i].image != "") //from here
+                            Container(
+                              width: 400,
+                              height: 200,
+                              alignment: Alignment.center,
+                              child: Image.network(snapshot.data[i].image),
+                            ),
+                          if (snapshot.data[i].image != "")
+                            Link(
+                              uri: Uri.parse(snapshot.data[i].image),
+                              builder: (context, followLink) => GestureDetector(
+                                onTap: followLink,
+                                child: Text(
+                                  'Click this link to download image',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.red,
+                                    decoration: TextDecoration.underline,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
                           Text(
                             '-----------------------------------------------------------------------------------------------',
                             textAlign: TextAlign.left,
@@ -115,6 +129,12 @@ class _DataFromAPIState extends State<DataFromAPI> {
 class Incident {
   late final String dateTime, incidentType, incident_desc, location, image;
   late final int report_num;
-  Incident(this.report_num, this.dateTime, this.incidentType,
-      this.incident_desc, this.location, this.image);
+  Incident(
+    this.report_num,
+    this.dateTime,
+    this.incidentType,
+    this.incident_desc,
+    this.location,
+    this.image,
+  );
 }
