@@ -19,8 +19,8 @@ class ChatBubble extends CustomPainter {
           RRect.fromLTRBAndCorners(
             0,
             0,
-            size.width + 2,
-            size.height + 2,
+            size.width - 8,
+            size.height,
             bottomLeft: Radius.circular(_radius),
             topRight: Radius.circular(_radius),
             topLeft: Radius.circular(_radius),

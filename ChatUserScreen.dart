@@ -1,8 +1,10 @@
+import 'package:chat_app_test/ChatScreen.dart';
+import 'package:chat_app_test/LoginScreen.dart';
+import 'package:chat_app_test/user.dart';
 import 'package:flutter/material.dart';
-import 'package:user_chat_ui/ChatScreen.dart';
-import 'package:user_chat_ui/loginScreen.dart';
-import 'package:user_chat_ui/user.dart';
 import 'Global.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ChatUsersScreen extends StatefulWidget {
   //
@@ -18,14 +20,14 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
   //
   late List<User> _chatUsers;
   late bool _connectedToSocket;
-  late String _connectMessage;
+  late String _errorConnectMessage;
 
   @override
   void initState() {
     super.initState();
     _chatUsers = G.getUsersFor(G.loggedInUser);
     _connectedToSocket = false;
-    _connectMessage = 'Connecting...';
+    _errorConnectMessage = 'Connecting...';
     _connectSocket();
   }
 
@@ -50,40 +52,70 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
     );
   }
 
+  Future<List<User>> _getUsers() async {
+    var data = await http.get(Uri.http('10.0.2.2:5001', '/api/contacts'));
+    var jsonData = json.decode(data.body);
+
+    List<User> contacts = [];
+    for (var item in jsonData) {
+      User contact = User(
+          user_id: item['user_id'].toString(),
+          id: item['id'],
+          name: item['name'],
+          surname: item['surname']);
+      contacts.add(contact);
+    }
+    print(contacts.length);
+    return contacts;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Chat Users"),
+        title: Text("Chat Users"),
         actions: <Widget>[
           IconButton(
               onPressed: () {
-                G.socketUtils!.closeConnection();
-                _openLoginScreen(
-                    context); // ChatScreen Close button redirects to login screen
+                _openLoginScreen(context);
               },
               icon: const Icon(Icons.close))
         ],
       ),
-      body: _buildListView(),
+      body: FutureBuilder(
+        future: _getUsers(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.data == null) {
+            return const Center(
+              child: Text("Please wait Loading..."),
+            );
+          } else {
+            return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  User user = snapshot.data[index];
+                  return ListTile(
+                      leading: const CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            "https://images.pexels.com/photos/2659177/pexels-photo-2659177.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"),
+                      ),
+                      title: Text(snapshot.data[index].name +
+                          "" +
+                          snapshot.data[index].surname +
+                          "    " +
+                          snapshot.data[index].user_id),
+                      subtitle: Text(
+                        snapshot.data[index].id.toString(),
+                      ),
+                      onTap: () {
+                        G.toChatUser = user;
+                        _openChatScreen(context);
+                      });
+                });
+          }
+        },
+      ),
     );
-  }
-
-  ListView _buildListView() {
-    return ListView.builder(
-        itemCount: _chatUsers.length,
-        itemBuilder: (context, index) {
-          User user = _chatUsers[index];
-          return ListTile(
-            onTap: () {
-              G.toChatUser = user;
-              _openChatScreen(context);
-            },
-            title: Text(user.name),
-            subtitle: Text('ID ${user.id},    user_id:${user.user_id}'),
-            trailing: Text(_connectedToSocket ? 'Connected' : _connectMessage),
-          );
-        });
   }
 
   _openLoginScreen(context) async {
@@ -109,7 +141,7 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
     print('onConnectError $data');
     setState(() {
       _connectedToSocket = false;
-      _connectMessage = 'Failed to Connect';
+      _errorConnectMessage = 'Failed to Connect';
     });
   }
 
@@ -117,7 +149,7 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
     print('onConnectTimeout $data');
     setState(() {
       _connectedToSocket = false;
-      _connectMessage = 'Connection timedout';
+      _errorConnectMessage = 'Connection timedout';
     });
   }
 
@@ -125,7 +157,7 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
     print('onError $data');
     setState(() {
       _connectedToSocket = false;
-      _connectMessage = 'Connection Failed';
+      _errorConnectMessage = 'Connection Failed';
     });
   }
 
@@ -133,7 +165,7 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
     print('onDisconnect $data');
     setState(() {
       _connectedToSocket = false;
-      _connectMessage = 'Disconnected';
+      _errorConnectMessage = 'Disconnected';
     });
   }
 }

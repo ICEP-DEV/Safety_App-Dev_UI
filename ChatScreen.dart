@@ -1,12 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
+import 'package:chat_app_test/ChatBubble.dart';
+import 'package:chat_app_test/Global.dart';
+import 'package:chat_app_test/SocketUtils.dart';
+import 'package:chat_app_test/user.dart';
 import 'package:flutter/material.dart';
-import 'package:user_chat_ui/ChatBubble.dart';
-import 'package:user_chat_ui/ChatMessageModel.dart';
-import 'package:user_chat_ui/Global.dart';
-import 'package:user_chat_ui/socketUtils.dart';
-import 'package:user_chat_ui/user.dart';
-import 'ChatTitle.dart';
 import 'package:intl/intl.dart';
+import 'ChatMessageModel.dart';
+import 'ChatTitle.dart';
 import 'package:http/http.dart' as http;
 
 class ChatScreen extends StatefulWidget {
@@ -23,18 +24,18 @@ class ChatScreen extends StatefulWidget {
 
 class ChatScreenState extends State<ChatScreen> {
   //
-  late TextEditingController _chatTextCOntroller;
+  late TextEditingController _textController;
   late List<ChatMessageModel> _chatMessages;
   late User _chatUser;
-  late ScrollController _chatListController;
+  late ScrollController _chatLVController;
   late UserOnlineStatus _userOnlineStatus;
 
   @override
   void initState() {
     super.initState();
     _userOnlineStatus = UserOnlineStatus.connecting;
-    _chatListController = ScrollController(initialScrollOffset: 0.0);
-    _chatTextCOntroller = TextEditingController();
+    _chatLVController = ScrollController(initialScrollOffset: 0.0);
+    _textController = TextEditingController();
     _chatUser = G.toChatUser;
     _chatMessages = [];
     _initSocketListeners();
@@ -47,15 +48,15 @@ class ChatScreenState extends State<ChatScreen> {
     G.socketUtils?.setOnMessageBackFromServer(onMessageBackFromServer);
   }
 
-  DateTime now = DateTime.now();
   _checkOnline() async {
+    DateTime now = DateTime.now();
     ChatMessageModel chatMessageModel = ChatMessageModel(
         to: G.toChatUser.id,
         from: G.loggedInUser.id,
-        chatId: 0,
+        chatId: G.loggedInUser.id,
         chatType: SocketUtils.SINGLE_CHAT,
+        description: _textController.text,
         toUserOnlineStatus: false,
-        message: _chatTextCOntroller.text,
         dateTime: DateFormat.Hm().format(now));
     G.socketUtils?.checkOnline(chatMessageModel);
   }
@@ -92,7 +93,7 @@ class ChatScreenState extends State<ChatScreen> {
       child: Container(
         child: ListView.builder(
           cacheExtent: 100,
-          controller: _chatListController,
+          controller: _chatLVController,
           reverse: false,
           shrinkWrap: true,
           padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
@@ -118,6 +119,10 @@ class ChatScreenState extends State<ChatScreen> {
             icon: Icon(Icons.send),
             onPressed: () async {
               _sendButtonTap();
+              DataModel? data = await submitData(_textController);
+              setState(() {
+                _dataModel = data;
+              });
             },
           ),
         ],
@@ -128,7 +133,7 @@ class ChatScreenState extends State<ChatScreen> {
   _chatTextArea() {
     return Expanded(
       child: TextField(
-        controller: _chatTextCOntroller,
+        controller: _textController,
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
@@ -161,16 +166,16 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   _sendButtonTap() async {
-    if (_chatTextCOntroller.text.isEmpty) {
+    if (_textController.text.isEmpty) {
       return;
     }
     DateTime now = DateTime.now();
     ChatMessageModel chatMessageModel = ChatMessageModel(
-        chatId: 0,
+        chatId: G.loggedInUser.id,
         to: _chatUser.id,
         from: G.loggedInUser.id,
         toUserOnlineStatus: false,
-        message: _chatTextCOntroller.text,
+        description: _textController.text,
         chatType: SocketUtils.SINGLE_CHAT,
         dateTime: DateFormat.Hm().format(now));
     _addMessage(0, chatMessageModel, _isFromMe(G.loggedInUser));
@@ -179,7 +184,7 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   _clearMessage() {
-    _chatTextCOntroller.text = '';
+    _textController.text = '';
   }
 
   _isFromMe(User fromUser) {
@@ -187,17 +192,18 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   _chatBubble(ChatMessageModel chatMessageModel) {
+    print(chatMessageModel.description);
     bool fromMe = chatMessageModel.from == G.loggedInUser.id;
     Alignment alignment = fromMe ? Alignment.topRight : Alignment.topLeft;
     Alignment chatArrowAlignment =
         fromMe ? Alignment.topRight : Alignment.topLeft;
     TextStyle textStyle = TextStyle(
-      fontSize: 15.0,
+      fontSize: 16.0,
       color: fromMe ? Colors.white : Colors.black54,
     );
     Color chatBgColor = fromMe ? Colors.blue : Colors.black12;
     EdgeInsets edgeInsets = fromMe
-        ? EdgeInsets.fromLTRB(5, 5, 15, 15)
+        ? EdgeInsets.fromLTRB(5, 5, 15, 5)
         : EdgeInsets.fromLTRB(15, 5, 5, 5);
     EdgeInsets margins = fromMe
         ? EdgeInsets.fromLTRB(80, 5, 10, 5)
@@ -224,10 +230,10 @@ class ChatScreenState extends State<ChatScreen> {
                   ),
                   // ignore: prefer_const_constructors
                   SizedBox(
-                    height: 5.0,
+                    height: 4.0,
                   ),
                   Text(
-                    chatMessageModel.message,
+                    chatMessageModel.description,
                     // CHATSCREEN TEXT
                   )
                 ],
@@ -277,7 +283,7 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   _addMessage(id, ChatMessageModel chatMessageModel, fromMe) async {
-    print('Adding Message to UI ${chatMessageModel.message}');
+    print('Adding Message to UI ${chatMessageModel.description}');
     setState(() {
       _chatMessages.add(chatMessageModel);
     });
@@ -288,9 +294,9 @@ class ChatScreenState extends State<ChatScreen> {
   /// Scroll the Chat List when it goes to bottom
   _chatListScrollToBottom() {
     Timer(Duration(milliseconds: 100), () {
-      if (_chatListController.hasClients) {
-        _chatListController.animateTo(
-          _chatListController.position.maxScrollExtent,
+      if (_chatLVController.hasClients) {
+        _chatLVController.animateTo(
+          _chatLVController.position.maxScrollExtent,
           duration: Duration(milliseconds: 100),
           curve: Curves.decelerate,
         );
@@ -300,3 +306,43 @@ class ChatScreenState extends State<ChatScreen> {
 }
 
 enum UserOnlineStatus { connecting, online, not_online }
+
+DataModel dataModeFromJson(String str) => DataModel.fromJson(json.decode(str));
+
+DataModel? _dataModel;
+
+class DataModel {
+  DataModel({required this.description});
+
+  String description;
+
+  factory DataModel.fromJson(Map<String, dynamic> json) => DataModel(
+        description: json["description"],
+      );
+  Map<String, dynamic> toJson() => {
+        "description": description,
+      };
+}
+
+Future<DataModel?> submitData(
+  TextEditingController _textController,
+) async {
+  var response =
+      await http.post(Uri.http('10.0.2.2:5001', '/api/post/'), body: {
+    "dateTime": DateTime.now().toString(),
+    "description": _textController.text,
+  });
+
+  var data = response.body;
+  print(data);
+  if (response.statusCode == 200) {
+    String responseString = response.body;
+    dataModeFromJson(responseString);
+  } else
+    return null;
+  return null;
+}
+
+http.Client getClient() {
+  return http.Client();
+}

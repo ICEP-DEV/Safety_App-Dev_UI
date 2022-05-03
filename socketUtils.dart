@@ -1,13 +1,13 @@
 import 'dart:io';
-import 'package:user_chat_ui/ChatMessageModel.dart';
-import 'package:user_chat_ui/user.dart';
+import 'package:chat_app_test/ChatMessageModel.dart';
+import 'package:chat_app_test/user.dart';
 import 'package:adhara_socket_io/adhara_socket_io.dart';
 
 class SocketUtils {
   //
   static String _serverIP =
       Platform.isIOS ? 'http://localhost' : 'http://10.0.2.2';
-  static const int SERVER_PORT = 4002;
+  static const int SERVER_PORT = 5001;
   static String _connectUrl = '$_serverIP:$SERVER_PORT';
 
   // Events
@@ -42,14 +42,14 @@ class SocketUtils {
     _socket = await _manager.createInstance(_socketOptions());
   }
 
-  _socketOptions() async {
+  _socketOptions() {
     final Map<String, String> userMap = {
       'from': _fromUser.id.toString(),
     };
     return SocketOptions(
       _connectUrl,
       enableLogging: true,
-      transports: [Transports.webSocket],
+      transports: [Transports.WEB_SOCKET],
       query: userMap,
     );
   }
@@ -64,7 +64,9 @@ class SocketUtils {
   }
 
   setOnMessageBackFromServer(Function onMessageBackFromServer) {
-    _socket?.on(SUB_EVENT_MESSAGE_FROM_SERVER);
+    _socket?.on(SUB_EVENT_MESSAGE_FROM_SERVER, (data) {
+      onMessageBackFromServer(data);
+    });
   }
 
   checkOnline(ChatMessageModel chatMessageModel) {
@@ -86,35 +88,54 @@ class SocketUtils {
   }
 
   setConnectListener(Function onConnect) {
-    _socket?.onConnect;
+    _socket?.onConnect((data) {
+      onConnect(data);
+    });
   }
 
   setOnConnectionErrorListener(Function onConnectError) {
-    _socket?.onConnectError;
+    _socket?.onConnectError((data) {
+      onConnectError(data);
+    });
   }
 
   setOnConnectionErrorTimeOutListener(Function onConnectTimeout) {
-    _socket?.onConnectTimeout;
+    _socket?.onConnectTimeout((data) {
+      onConnectTimeout(data);
+    });
   }
 
   setOnErrorListener(Function onError) {
-    _socket?.onError;
+    _socket?.onError((error) {
+      onError(error);
+    });
   }
 
   setOnDisconnectListener(Function onDisconnect) {
-    _socket?.onDisconnect;
+    _socket?.onDisconnect((data) {
+      print("onDisconnect $data");
+      onDisconnect(data);
+    });
   }
 
   setOnChatMessageReceivedListener(Function onChatMessageReceived) {
-    _socket?.on(ON_MESSAGE_RECEIVED);
+    _socket?.on(ON_MESSAGE_RECEIVED, (data) {
+      print("Received $data");
+      onChatMessageReceived(data);
+    });
   }
 
   setOnMessageSentToChatUserListener(Function onMessageSentListener) {
-    _socket?.on(SUB_EVENT_MESSAGE_SENT);
+    _socket?.on(SUB_EVENT_MESSAGE_SENT, (data) {
+      print("onMessageSentListener $data");
+      onMessageSentListener(data);
+    });
   }
 
   setOnUserConnectionStatusListener(Function onUserConnectionStatus) {
-    _socket?.on(IS_USER_CONNECTED_EVENT);
+    _socket?.on(IS_USER_CONNECTED_EVENT, (data) {
+      onUserConnectionStatus(data);
+    });
   }
 
   closeConnection() {

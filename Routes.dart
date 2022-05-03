@@ -1,6 +1,6 @@
-import 'package:user_chat_ui/ChatScreen.dart';
-import 'package:user_chat_ui/ChatUserScreen.dart';
-import 'package:user_chat_ui/loginScreen.dart';
+import 'package:chat_app_test/ChatScreen.dart';
+import 'package:chat_app_test/ChatUserScreen.dart';
+import 'package:chat_app_test/LoginScreen.dart';
 
 class Routes {
   static routes() {

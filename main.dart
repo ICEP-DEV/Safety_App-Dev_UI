@@ -1,5 +1,5 @@
+import 'package:chat_app_test/Routes.dart';
 import 'package:flutter/material.dart';
-import 'package:user_chat_ui/Routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,12 +10,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
       routes: Routes.routes(),
-      initialRoute: Routes.initScreen(), // Route to Login Screen
+      initialRoute: Routes.initScreen(),
     );
   }
 }
