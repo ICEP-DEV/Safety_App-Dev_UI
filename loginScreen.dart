@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:chat_app_test/ChatUserScreen.dart';
 import 'package:chat_app_test/user.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   //
   late TextEditingController _usernameController;
-
+  int countContacts = 95;
   @override
   void initState() {
     super.initState();
@@ -53,11 +54,14 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: 20.0,
             ),
-            OutlineButton(
-                child: Text('Request Chat'),
-                onPressed: () {
-                  _loginBtnTap();
-                })
+            Badge(
+                badgeContent: Text('$countContacts'),
+                child: OutlinedButton(
+                  child: Text('View Chats'),
+                  onPressed: () {
+                    _loginBtnTap();
+                  },
+                ))
           ],
         ),
       ),
@@ -70,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     User me = G.dummyUsers[0];
-    if (_usernameController.text != 'a') {
+    if (_usernameController.text != 'vecName') {
       me = G.dummyUsers[1];
     }
 
