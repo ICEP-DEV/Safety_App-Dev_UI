@@ -19,10 +19,14 @@ class G {
   }
 
   static void initDummyUsers() {
-    User userA =
-        new User(id: 0, name: 'VECName', user_id: "216257183", surname: '');
-    User userB =
-        new User(id: 20, name: 'UserName', user_id: "215676222", surname: '');
+    User userA = new User(
+        id: 0,
+        name: 'VECName',
+        user_id: "216257183",
+        surname: '',
+        title: 'VEC');
+    User userB = new User(
+        id: 20, name: 'UserName', user_id: "215676222", surname: '', title: '');
     dummyUsers = <User>[];
     dummyUsers.add(userA);
     dummyUsers.add(userB);

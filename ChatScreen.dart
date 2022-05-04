@@ -30,6 +30,7 @@ class ChatScreenState extends State<ChatScreen> {
   late ScrollController _chatLVController;
   late UserOnlineStatus _userOnlineStatus;
 
+  late String title = "VEC";
   @override
   void initState() {
     super.initState();
@@ -119,7 +120,7 @@ class ChatScreenState extends State<ChatScreen> {
             icon: Icon(Icons.send),
             onPressed: () async {
               _sendButtonTap();
-              DataModel? data = await submitData(_textController);
+              DataModel? data = await submitData(_textController, title);
               setState(() {
                 _dataModel = data;
               });
@@ -179,7 +180,6 @@ class ChatScreenState extends State<ChatScreen> {
         chatType: SocketUtils.SINGLE_CHAT,
         dateTime: DateFormat.Hm().format(now));
     _addMessage(0, chatMessageModel, _isFromMe(G.loggedInUser));
-    _clearMessage();
     G.socketUtils?.sendSingleChatMessage(chatMessageModel, _chatUser);
   }
 
@@ -312,25 +312,28 @@ DataModel dataModeFromJson(String str) => DataModel.fromJson(json.decode(str));
 DataModel? _dataModel;
 
 class DataModel {
-  DataModel({required this.description});
+  DataModel({required this.description, required this.title});
 
   String description;
+  String title;
 
   factory DataModel.fromJson(Map<String, dynamic> json) => DataModel(
         description: json["description"],
+        title: json["title"],
       );
   Map<String, dynamic> toJson() => {
         "description": description,
+        "title": title,
       };
 }
 
 Future<DataModel?> submitData(
-  TextEditingController _textController,
-) async {
+    TextEditingController _textController, String title) async {
   var response =
       await http.post(Uri.http('10.0.2.2:5001', '/api/post/'), body: {
     "dateTime": DateTime.now().toString(),
     "description": _textController.text,
+    "title": title.toString(),
   });
 
   var data = response.body;
