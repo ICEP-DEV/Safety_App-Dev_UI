@@ -30,7 +30,8 @@ class ChatScreenState extends State<ChatScreen> {
   late ScrollController _chatLVController;
   late UserOnlineStatus _userOnlineStatus;
 
-  late String title = "VEC";
+  String title = G.loggedInUser.name;
+
   @override
   void initState() {
     super.initState();
@@ -333,7 +334,7 @@ Future<DataModel?> submitData(
       await http.post(Uri.http('10.0.2.2:5001', '/api/post/'), body: {
     "dateTime": DateTime.now().toString(),
     "description": _textController.text,
-    "title": title.toString(),
+    "title": title.toString()
   });
 
   var data = response.body;
@@ -343,7 +344,6 @@ Future<DataModel?> submitData(
     dataModeFromJson(responseString);
   } else
     return null;
-  return null;
 }
 
 http.Client getClient() {

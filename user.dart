@@ -4,7 +4,6 @@ class User {
   String name;
   String surname;
   String title;
-
   User(
       {required this.id,
       required this.name,
@@ -18,7 +17,7 @@ class User {
         id: json["id"] as int,
         name: json["title"] as String,
         surname: json["body"] as String,
-        title: json["title"] as String);
+        title: json["body"] as String);
   }
 
   Map<String, dynamic> toJson() => {
