@@ -29,9 +29,9 @@ class ChatBubble extends CustomPainter {
             ..color = this.color
             ..style = PaintingStyle.fill);
       var path = new Path();
-      path.moveTo(size.width - _x, size.height - 10);
-      path.lineTo(size.width - _x, size.height);
-      path.lineTo(size.width, size.height);
+      path.moveTo(size.width - _x, size.height - 90);
+      path.lineTo(size.width - _x, size.height + 40);
+      path.lineTo(size.width, size.height - 17);
       canvas.clipPath(path);
       canvas.drawRRect(
           RRect.fromLTRBAndCorners(
@@ -59,9 +59,9 @@ class ChatBubble extends CustomPainter {
             ..color = this.color
             ..style = PaintingStyle.fill);
       var path = new Path();
-      path.moveTo(0, size.height);
-      path.lineTo(_x, size.height);
-      path.lineTo(_x, size.height - 10);
+      path.moveTo(size.width - _x, size.height - 90);
+      path.lineTo(size.width - _x, size.height + 40);
+      path.lineTo(size.width, size.height - 17);
       canvas.clipPath(path);
       canvas.drawRRect(
           RRect.fromLTRBAndCorners(

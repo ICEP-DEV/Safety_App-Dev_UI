@@ -198,10 +198,10 @@ class ChatScreenState extends State<ChatScreen> {
     Alignment chatArrowAlignment =
         fromMe ? Alignment.topRight : Alignment.topLeft;
     TextStyle textStyle = TextStyle(
-      fontSize: 16.0,
-      color: fromMe ? Colors.white : Colors.black54,
+      fontSize: 15.0,
+      color: fromMe ? Colors.white : Colors.black,
     );
-    Color chatBgColor = fromMe ? Colors.blue : Colors.black12;
+    Color chatBgColor = fromMe ? Colors.red : Colors.black;
     EdgeInsets edgeInsets = fromMe
         ? EdgeInsets.fromLTRB(5, 5, 15, 5)
         : EdgeInsets.fromLTRB(15, 5, 5, 5);
