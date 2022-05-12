@@ -269,6 +269,10 @@ class _ReportIncidentsState extends State<ReportIncidents> {
         msg: 'Report sent',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM);
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => ReportIncidents()));
     if (response.statusCode == 200) {
       String responseString = response.body;
       dataMode_FromJson(responseString);
@@ -291,6 +295,10 @@ class _ReportIncidentsState extends State<ReportIncidents> {
         msg: 'Report sent',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM);
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => ReportIncidents()));
     if (response.statusCode == 200) {
       String responseString = response.body;
       dataMode_FromJson(responseString);

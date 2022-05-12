@@ -374,8 +374,8 @@ class _RegisterAccountState extends State<RegisterAccount> {
       String email,
       String otp,
       String password) async {
-    var response =
-        await http.post(Uri.http('10.0.2.2:5001', 'user/auth_reg'), body: {
+    var response = await http
+        .post(Uri.https('gbv-beta.herokuapp.com', 'user/auth_reg'), body: {
       "surname": surname,
       "name": name,
       "other_contact": otherPhoneNumber,
