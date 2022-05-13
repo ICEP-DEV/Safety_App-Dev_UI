@@ -1,5 +1,6 @@
 import 'package:completereport/Home/vechome.dart';
 import 'package:completereport/Information%20Center/vec_information_center.dart';
+import 'package:completereport/user_chat/first.dart';
 import 'package:completereport/viewreport.dart';
 import 'package:flutter/material.dart';
 
@@ -84,6 +85,19 @@ class _VECTunnelState extends State<VECTunnel> {
                     )),
               ),
               SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MyApp()));
+                },
+                child: Text('View Chat'),
+                style: ElevatedButton.styleFrom(
+                    fixedSize: Size(250, 50),
+                    primary: Colors.red[700],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    )),
+              ),
             ],
           ),
         ),

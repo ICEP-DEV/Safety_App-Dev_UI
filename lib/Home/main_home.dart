@@ -1,6 +1,8 @@
 import 'package:completereport/Admin/admin.dart';
 import 'package:completereport/Home/userhome.dart';
+import 'package:completereport/Home/usertunnel.dart';
 import 'package:completereport/Home/vechome.dart';
+import 'package:completereport/Home/vectunnel.dart';
 import 'package:completereport/register.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +40,7 @@ class _MainHomeState extends State<MainHome> {
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => UserHome()));
+                        MaterialPageRoute(builder: (context) => UserTunnel()));
                   },
                   child: Text('User Login'),
                   style: ElevatedButton.styleFrom(
@@ -52,7 +54,7 @@ class _MainHomeState extends State<MainHome> {
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => VECHome()));
+                        MaterialPageRoute(builder: (context) => VECTunnel()));
                   },
                   child: Text('VEC Login'),
                   style: ElevatedButton.styleFrom(
