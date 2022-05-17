@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:chat_app_test/ChatMessageModel.dart';
-import 'package:chat_app_test/user.dart';
+import 'package:completereport/Vec Chat/ChatMessageModel.dart';
+import 'package:completereport/Vec Chat/user.dart';
 import 'package:adhara_socket_io/adhara_socket_io.dart';
 
 class SocketUtils {
@@ -49,7 +49,7 @@ class SocketUtils {
     return SocketOptions(
       _connectUrl,
       enableLogging: true,
-      transports: [Transports.WEB_SOCKET],
+      transports: [Transports.webSocket],
       query: userMap,
     );
   }
@@ -64,9 +64,7 @@ class SocketUtils {
   }
 
   setOnMessageBackFromServer(Function onMessageBackFromServer) {
-    _socket?.on(SUB_EVENT_MESSAGE_FROM_SERVER, (data) {
-      onMessageBackFromServer(data);
-    });
+    _socket?.on(SUB_EVENT_MESSAGE_FROM_SERVER);
   }
 
   checkOnline(ChatMessageModel chatMessageModel) {
@@ -88,54 +86,35 @@ class SocketUtils {
   }
 
   setConnectListener(Function onConnect) {
-    _socket?.onConnect((data) {
-      onConnect(data);
-    });
+    _socket?.onConnect;
   }
 
   setOnConnectionErrorListener(Function onConnectError) {
-    _socket?.onConnectError((data) {
-      onConnectError(data);
-    });
+    _socket?.onConnectError;
   }
 
   setOnConnectionErrorTimeOutListener(Function onConnectTimeout) {
-    _socket?.onConnectTimeout((data) {
-      onConnectTimeout(data);
-    });
+    _socket?.onConnectTimeout;
   }
 
   setOnErrorListener(Function onError) {
-    _socket?.onError((error) {
-      onError(error);
-    });
+    _socket?.onError;
   }
 
   setOnDisconnectListener(Function onDisconnect) {
-    _socket?.onDisconnect((data) {
-      print("onDisconnect $data");
-      onDisconnect(data);
-    });
+    _socket?.onDisconnect;
   }
 
   setOnChatMessageReceivedListener(Function onChatMessageReceived) {
-    _socket?.on(ON_MESSAGE_RECEIVED, (data) {
-      print("Received $data");
-      onChatMessageReceived(data);
-    });
+    _socket?.on(ON_MESSAGE_RECEIVED);
   }
 
   setOnMessageSentToChatUserListener(Function onMessageSentListener) {
-    _socket?.on(SUB_EVENT_MESSAGE_SENT, (data) {
-      print("onMessageSentListener $data");
-      onMessageSentListener(data);
-    });
+    _socket?.on(SUB_EVENT_MESSAGE_SENT);
   }
 
   setOnUserConnectionStatusListener(Function onUserConnectionStatus) {
-    _socket?.on(IS_USER_CONNECTED_EVENT, (data) {
-      onUserConnectionStatus(data);
-    });
+    _socket?.on(IS_USER_CONNECTED_EVENT);
   }
 
   closeConnection() {

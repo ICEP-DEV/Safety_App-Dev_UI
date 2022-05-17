@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:chat_app_test/ChatBubble.dart';
-import 'package:chat_app_test/Global.dart';
-import 'package:chat_app_test/SocketUtils.dart';
-import 'package:chat_app_test/user.dart';
+import 'package:completereport/Vec%20Chat/ChatBubble.dart';
+import 'package:completereport/Vec%20Chat/Global.dart';
+import 'package:completereport/Vec%20Chat/socketUtils.dart';
+import 'package:completereport/Vec%20Chat/user.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'ChatMessageModel.dart';
+import 'package:completereport/Vec%20Chat/ChatMessageModel.dart';
 import 'ChatTitle.dart';
 import 'package:http/http.dart' as http;
 
@@ -30,7 +30,8 @@ class ChatScreenState extends State<ChatScreen> {
   late ScrollController _chatLVController;
   late UserOnlineStatus _userOnlineStatus;
 
-  late String title = "VEC";
+  String title = G.loggedInUser.name;
+
   @override
   void initState() {
     super.initState();
@@ -138,21 +139,21 @@ class ChatScreenState extends State<ChatScreen> {
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Colors.grey,
               width: 0.0,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Colors.white,
               width: 0.0,
             ),
           ),
           filled: true,
           fillColor: Colors.white,
-          contentPadding: EdgeInsets.all(10.0),
+          contentPadding: const EdgeInsets.all(10.0),
           hintText: 'Type message...',
         ),
       ),
@@ -203,11 +204,11 @@ class ChatScreenState extends State<ChatScreen> {
     );
     Color chatBgColor = fromMe ? Colors.red : Colors.black;
     EdgeInsets edgeInsets = fromMe
-        ? EdgeInsets.fromLTRB(5, 5, 15, 5)
-        : EdgeInsets.fromLTRB(15, 5, 5, 5);
+        ? const EdgeInsets.fromLTRB(5, 5, 15, 5)
+        : const EdgeInsets.fromLTRB(15, 5, 5, 5);
     EdgeInsets margins = fromMe
-        ? EdgeInsets.fromLTRB(80, 5, 10, 5)
-        : EdgeInsets.fromLTRB(10, 5, 80, 5);
+        ? const EdgeInsets.fromLTRB(80, 5, 10, 5)
+        : const EdgeInsets.fromLTRB(10, 5, 80, 5);
 
     return Container(
       color: Colors.white,
@@ -293,11 +294,11 @@ class ChatScreenState extends State<ChatScreen> {
 
   /// Scroll the Chat List when it goes to bottom
   _chatListScrollToBottom() {
-    Timer(Duration(milliseconds: 100), () {
+    Timer(const Duration(milliseconds: 100), () {
       if (_chatLVController.hasClients) {
         _chatLVController.animateTo(
           _chatLVController.position.maxScrollExtent,
-          duration: Duration(milliseconds: 100),
+          duration: const Duration(milliseconds: 100),
           curve: Curves.decelerate,
         );
       }
@@ -330,10 +331,10 @@ class DataModel {
 Future<DataModel?> submitData(
     TextEditingController _textController, String title) async {
   var response =
-      await http.post(Uri.http('10.0.2.2:5001', '/api/post/'), body: {
+      await http.post(Uri.https('gbv-beta.herokuapp.com', '/api/post/'), body: {
     "dateTime": DateTime.now().toString(),
     "description": _textController.text,
-    "title": title.toString(),
+    "title": title.toString()
   });
 
   var data = response.body;
@@ -343,7 +344,6 @@ Future<DataModel?> submitData(
     dataModeFromJson(responseString);
   } else
     return null;
-  return null;
 }
 
 http.Client getClient() {

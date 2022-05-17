@@ -1,4 +1,4 @@
-import 'package:completereport/Home/main_home.dart';
+import 'package:completereport/Login/user_login.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/link.dart';
 import 'package:mailer/mailer.dart';
@@ -123,7 +123,7 @@ class _OTPState extends State<OTP> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => MainHome()));
+                                builder: (context) => LoginPage()));
                       }),
                   SizedBox(height: 20),
                   Row(
@@ -131,18 +131,16 @@ class _OTPState extends State<OTP> {
                       Text(
                         "didn't receive the OTP? click ",
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          email_otp();
-                        },
-                        child: Text('here'),
-                        style: ElevatedButton.styleFrom(
-                            fixedSize: Size(1, 1),
-                            primary: Colors.blue,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            )),
-                      ),
+                      GestureDetector(
+                          child: Text(
+                            "Here",
+                            style: TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          onTap: () {
+                            email_otp();
+                          }),
                       Text(
                         ' to resend',
                       ),

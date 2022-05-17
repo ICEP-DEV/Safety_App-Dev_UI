@@ -1,6 +1,6 @@
 import 'package:badges/badges.dart';
-import 'package:chat_app_test/ChatUserScreen.dart';
-import 'package:chat_app_test/user.dart';
+import 'package:completereport/Vec Chat/ChatUserScreen.dart';
+import 'package:completereport/Vec Chat/user.dart';
 import 'package:flutter/material.dart';
 import 'Global.dart';
 
@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
             TextField(
               controller: _usernameController,
               textAlign: TextAlign.center,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(5.0),
@@ -51,13 +51,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 contentPadding: EdgeInsets.all(20.0),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20.0,
             ),
             Badge(
                 badgeContent: Text('$countContacts'),
                 child: OutlinedButton(
-                  child: Text('View Chats'),
+                  child: const Text('View Chats'),
                   onPressed: () {
                     _loginBtnTap();
                   },
@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     User me = G.dummyUsers[0];
-    if (_usernameController.text != 'a') {
+    if (_usernameController.text != 'vecName') {
       me = G.dummyUsers[1];
     }
 

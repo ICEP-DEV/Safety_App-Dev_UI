@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:completereport/report.dart';
+import 'package:completereport/Login/user_login.dart';
 import 'package:flutter/material.dart';
 import 'Home/main_home.dart';
 
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.red,
       ),
-      home: MainHome(),
+      home: LoginPage(),
     );
   }
 }

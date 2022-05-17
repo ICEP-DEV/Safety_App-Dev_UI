@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
             TextField(
               controller: _usernameController,
               textAlign: TextAlign.center,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(5.0),
@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 contentPadding: EdgeInsets.all(20.0),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20.0,
             ),
             OutlineButton(
@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     User me = G.dummyUsers[0];
-    if (_usernameController.text != 'a') {
+    if (_usernameController.text != 'user') {
       me = G.dummyUsers[1];
     }
 

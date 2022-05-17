@@ -81,6 +81,7 @@ flutter:
      - lib/Home/assets/img1.jpg
      - lib/Home/assets/img2.png
      - lib/Home/assets/img3.png
+     - lib/Home/assets/END JBV.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:

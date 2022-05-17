@@ -1,6 +1,6 @@
-import 'package:chat_app_test/ChatScreen.dart';
-import 'package:chat_app_test/ChatUserScreen.dart';
-import 'package:chat_app_test/LoginScreen.dart';
+import 'package:completereport/Vec Chat/ChatScreen.dart';
+import 'package:completereport/Vec Chat/ChatUserScreen.dart';
+import 'package:completereport/Vec Chat/LoginScreen.dart';
 
 class Routes {
   static routes() {

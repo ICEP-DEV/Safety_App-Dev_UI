@@ -1,4 +1,4 @@
-import 'package:chat_app_test/user.dart';
+import 'package:completereport/Vec Chat/user.dart';
 import 'SocketUtils.dart';
 
 class G {
@@ -19,14 +19,18 @@ class G {
   }
 
   static void initDummyUsers() {
-    User userA = new User(
-        id: 0,
-        name: 'VECName',
+    User userA = User(
+        id: 3,
+        name: 'vecName',
         user_id: "216257183",
         surname: '',
         title: 'VEC');
-    User userB = new User(
-        id: 20, name: 'UserName', user_id: "215676222", surname: '', title: '');
+    User userB = User(
+        id: 20,
+        name: 'userName',
+        user_id: "215676222",
+        surname: '',
+        title: 'User');
     dummyUsers = <User>[];
     dummyUsers.add(userA);
     dummyUsers.add(userB);

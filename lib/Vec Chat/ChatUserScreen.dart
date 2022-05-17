@@ -1,6 +1,6 @@
-import 'package:chat_app_test/ChatScreen.dart';
-import 'package:chat_app_test/LoginScreen.dart';
-import 'package:chat_app_test/user.dart';
+import 'package:completereport/Vec Chat/ChatScreen.dart';
+import 'package:completereport/Vec Chat/LoginScreen.dart';
+import 'package:completereport/Vec Chat/user.dart';
 import 'package:flutter/material.dart';
 import 'Global.dart';
 import 'package:http/http.dart' as http;
@@ -53,7 +53,8 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
   }
 
   Future<List<User>> _getUsers() async {
-    var data = await http.get(Uri.http('10.0.2.2:5001', '/api/contacts'));
+    var data =
+        await http.get(Uri.https('gbv-beta.herokuapp.com', '/api/contacts'));
     var jsonData = json.decode(data.body);
 
     List<User> contacts = [];
