@@ -11,19 +11,16 @@ class ChatMessageModel {
   int to;
   int from;
   String description;
-  String chatType;
   bool toUserOnlineStatus;
   String dateTime;
 
-  ChatMessageModel({
-    required this.chatId,
-    required this.to,
-    required this.from,
-    required this.description,
-    required this.chatType,
-    required this.toUserOnlineStatus,
-    required this.dateTime,
-  });
+  ChatMessageModel(
+      {required this.chatId,
+      required this.to,
+      required this.from,
+      required this.description,
+      required this.dateTime,
+      required this.toUserOnlineStatus});
 
   factory ChatMessageModel.fromJson(Map<String, dynamic> json) =>
       ChatMessageModel(
@@ -31,9 +28,8 @@ class ChatMessageModel {
         to: json["to"],
         from: json["from"],
         description: json["description"],
-        chatType: json["chat_type"],
-        toUserOnlineStatus: json['to_user_online_status'],
         dateTime: json["dateTime"],
+        toUserOnlineStatus: json["toUserOnlineStatus"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -41,7 +37,7 @@ class ChatMessageModel {
         "to": to,
         "from": from,
         "description": description,
-        "chat_type": chatType,
         "dateTime": dateTime,
+        "toUserOnlineStatus": toUserOnlineStatus
       };
 }

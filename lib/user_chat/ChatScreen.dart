@@ -56,7 +56,6 @@ class ChatScreenState extends State<ChatScreen> {
         to: G.toChatUser.id,
         from: G.loggedInUser.id,
         chatId: G.loggedInUser.id,
-        chatType: SocketUtils.SINGLE_CHAT,
         description: _textController.text,
         toUserOnlineStatus: false,
         dateTime: DateFormat.Hm().format(now));
@@ -178,7 +177,6 @@ class ChatScreenState extends State<ChatScreen> {
         from: G.loggedInUser.id,
         toUserOnlineStatus: false,
         description: _textController.text,
-        chatType: SocketUtils.SINGLE_CHAT,
         dateTime: DateFormat.Hm().format(now));
     _addMessage(0, chatMessageModel, _isFromMe(G.loggedInUser));
     G.socketUtils?.sendSingleChatMessage(chatMessageModel, _chatUser);

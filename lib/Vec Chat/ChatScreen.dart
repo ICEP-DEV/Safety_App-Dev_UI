@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:completereport/Vec%20Chat/ChatBubble.dart';
-import 'package:completereport/Vec%20Chat/Global.dart';
-import 'package:completereport/Vec%20Chat/socketUtils.dart';
-import 'package:completereport/Vec%20Chat/user.dart';
+import 'package:completereport/Vec Chat/ChatBubble.dart';
+import 'package:completereport/Vec Chat/Global.dart';
+import 'package:completereport/Vec Chat/user.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:completereport/Vec%20Chat/ChatMessageModel.dart';
+import 'ChatMessageModel.dart';
 import 'ChatTitle.dart';
 import 'package:http/http.dart' as http;
 
@@ -30,8 +29,7 @@ class ChatScreenState extends State<ChatScreen> {
   late ScrollController _chatLVController;
   late UserOnlineStatus _userOnlineStatus;
 
-  String title = G.loggedInUser.name;
-
+  late String title = "VEC";
   @override
   void initState() {
     super.initState();
@@ -40,14 +38,7 @@ class ChatScreenState extends State<ChatScreen> {
     _textController = TextEditingController();
     _chatUser = G.toChatUser;
     _chatMessages = [];
-    _initSocketListeners();
     _checkOnline();
-  }
-
-  _initSocketListeners() async {
-    G.socketUtils?.setOnUserConnectionStatusListener(onUserConnectionStatus);
-    G.socketUtils?.setOnChatMessageReceivedListener(onChatMessageReceived);
-    G.socketUtils?.setOnMessageBackFromServer(onMessageBackFromServer);
   }
 
   _checkOnline() async {
@@ -56,11 +47,9 @@ class ChatScreenState extends State<ChatScreen> {
         to: G.toChatUser.id,
         from: G.loggedInUser.id,
         chatId: G.loggedInUser.id,
-        chatType: SocketUtils.SINGLE_CHAT,
         description: _textController.text,
         toUserOnlineStatus: false,
         dateTime: DateFormat.Hm().format(now));
-    G.socketUtils?.checkOnline(chatMessageModel);
   }
 
   @override
@@ -139,21 +128,21 @@ class ChatScreenState extends State<ChatScreen> {
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
-            borderSide: const BorderSide(
+            borderSide: BorderSide(
               color: Colors.grey,
               width: 0.0,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
-            borderSide: const BorderSide(
+            borderSide: BorderSide(
               color: Colors.white,
               width: 0.0,
             ),
           ),
           filled: true,
           fillColor: Colors.white,
-          contentPadding: const EdgeInsets.all(10.0),
+          contentPadding: EdgeInsets.all(10.0),
           hintText: 'Type message...',
         ),
       ),
@@ -178,10 +167,8 @@ class ChatScreenState extends State<ChatScreen> {
         from: G.loggedInUser.id,
         toUserOnlineStatus: false,
         description: _textController.text,
-        chatType: SocketUtils.SINGLE_CHAT,
         dateTime: DateFormat.Hm().format(now));
     _addMessage(0, chatMessageModel, _isFromMe(G.loggedInUser));
-    G.socketUtils?.sendSingleChatMessage(chatMessageModel, _chatUser);
   }
 
   _clearMessage() {
@@ -204,11 +191,11 @@ class ChatScreenState extends State<ChatScreen> {
     );
     Color chatBgColor = fromMe ? Colors.red : Colors.black;
     EdgeInsets edgeInsets = fromMe
-        ? const EdgeInsets.fromLTRB(5, 5, 15, 5)
-        : const EdgeInsets.fromLTRB(15, 5, 5, 5);
+        ? EdgeInsets.fromLTRB(5, 5, 15, 5)
+        : EdgeInsets.fromLTRB(15, 5, 5, 5);
     EdgeInsets margins = fromMe
-        ? const EdgeInsets.fromLTRB(80, 5, 10, 5)
-        : const EdgeInsets.fromLTRB(10, 5, 80, 5);
+        ? EdgeInsets.fromLTRB(80, 5, 10, 5)
+        : EdgeInsets.fromLTRB(10, 5, 80, 5);
 
     return Container(
       color: Colors.white,
@@ -294,11 +281,11 @@ class ChatScreenState extends State<ChatScreen> {
 
   /// Scroll the Chat List when it goes to bottom
   _chatListScrollToBottom() {
-    Timer(const Duration(milliseconds: 100), () {
+    Timer(Duration(milliseconds: 100), () {
       if (_chatLVController.hasClients) {
         _chatLVController.animateTo(
           _chatLVController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 100),
+          duration: Duration(milliseconds: 100),
           curve: Curves.decelerate,
         );
       }
@@ -331,10 +318,10 @@ class DataModel {
 Future<DataModel?> submitData(
     TextEditingController _textController, String title) async {
   var response =
-      await http.post(Uri.https('gbv-beta.herokuapp.com', '/api/post/'), body: {
+      await http.post(Uri.http('10.0.2.2:5001', '/api/post/'), body: {
     "dateTime": DateTime.now().toString(),
     "description": _textController.text,
-    "title": title.toString()
+    "title": title.toString(),
   });
 
   var data = response.body;
@@ -344,6 +331,7 @@ Future<DataModel?> submitData(
     dataModeFromJson(responseString);
   } else
     return null;
+  return null;
 }
 
 http.Client getClient() {

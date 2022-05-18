@@ -11,7 +11,6 @@ class ChatMessageModel {
   int to;
   int from;
   String description;
-  String chatType;
   bool toUserOnlineStatus;
   String dateTime;
 
@@ -20,7 +19,6 @@ class ChatMessageModel {
     required this.to,
     required this.from,
     required this.description,
-    required this.chatType,
     required this.toUserOnlineStatus,
     required this.dateTime,
   });
@@ -31,7 +29,6 @@ class ChatMessageModel {
         to: json["to"],
         from: json["from"],
         description: json["description"],
-        chatType: json["chat_type"],
         toUserOnlineStatus: json['to_user_online_status'],
         dateTime: json["dateTime"],
       );
@@ -41,7 +38,6 @@ class ChatMessageModel {
         "to": to,
         "from": from,
         "description": description,
-        "chat_type": chatType,
         "dateTime": dateTime,
       };
 }

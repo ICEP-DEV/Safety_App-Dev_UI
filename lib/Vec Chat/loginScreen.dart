@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
             TextField(
               controller: _usernameController,
               textAlign: TextAlign.center,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(5.0),
@@ -51,13 +51,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 contentPadding: EdgeInsets.all(20.0),
               ),
             ),
-            const SizedBox(
+            SizedBox(
               height: 20.0,
             ),
             Badge(
                 badgeContent: Text('$countContacts'),
                 child: OutlinedButton(
-                  child: const Text('View Chats'),
+                  child: Text('View Chats'),
                   onPressed: () {
                     _loginBtnTap();
                   },
@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     User me = G.dummyUsers[0];
-    if (_usernameController.text != 'vecName') {
+    if (_usernameController.text != 'a') {
       me = G.dummyUsers[1];
     }
 
