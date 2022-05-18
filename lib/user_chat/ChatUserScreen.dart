@@ -33,13 +33,6 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
     Future.delayed(Duration(seconds: 2), () async {
       print(
           "Connecting Logged In User: ${G.loggedInUser.name}, ID: ${G.loggedInUser.id}");
-      G.initSocket();
-      await G.socketUtils?.initSocket(G.loggedInUser);
-      G.socketUtils?.connectToSocket();
-      G.socketUtils?.setConnectListener(onConnect);
-      G.socketUtils?.setOnDisconnectListener(onDisconnect);
-      G.socketUtils?.setOnErrorListener(onError);
-      G.socketUtils?.setOnConnectionErrorListener(onConnectError);
     });
   }
 
@@ -58,7 +51,6 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
         actions: <Widget>[
           IconButton(
               onPressed: () {
-                G.socketUtils!.closeConnection();
                 openLoginScreen(
                     context); // ChatScreen Close button redirects to login screen
               },

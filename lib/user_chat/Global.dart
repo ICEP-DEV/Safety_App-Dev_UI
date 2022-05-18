@@ -1,9 +1,8 @@
 import 'package:completereport/user_chat/user.dart';
-import 'SocketUtils.dart';
 
 class G {
   // Socket
-  static SocketUtils? socketUtils;
+
   static late List<User> dummyUsers;
 
   // Logged In User
@@ -11,12 +10,6 @@ class G {
 
   // Single Chat - To Chat User
   static late User toChatUser;
-
-  static initSocket() {
-    if (null == socketUtils) {
-      socketUtils = SocketUtils();
-    }
-  }
 
   static void initDummyUsers() {
     User userA = User(

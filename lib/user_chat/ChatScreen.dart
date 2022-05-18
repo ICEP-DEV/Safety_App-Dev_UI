@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:completereport/user_chat/ChatBubble.dart';
 import 'package:completereport/user_chat/Global.dart';
-import 'package:completereport/user_chat/SocketUtils.dart';
 import 'package:completereport/user_chat/user.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -44,11 +43,7 @@ class ChatScreenState extends State<ChatScreen> {
     _checkOnline();
   }
 
-  _initSocketListeners() async {
-    G.socketUtils?.setOnUserConnectionStatusListener(onUserConnectionStatus);
-    G.socketUtils?.setOnChatMessageReceivedListener(onChatMessageReceived);
-    G.socketUtils?.setOnMessageBackFromServer(onMessageBackFromServer);
-  }
+  _initSocketListeners() async {}
 
   _checkOnline() async {
     DateTime now = DateTime.now();
@@ -59,7 +54,6 @@ class ChatScreenState extends State<ChatScreen> {
         description: _textController.text,
         toUserOnlineStatus: false,
         dateTime: DateFormat.Hm().format(now));
-    G.socketUtils?.checkOnline(chatMessageModel);
   }
 
   @override
@@ -179,7 +173,6 @@ class ChatScreenState extends State<ChatScreen> {
         description: _textController.text,
         dateTime: DateFormat.Hm().format(now));
     _addMessage(0, chatMessageModel, _isFromMe(G.loggedInUser));
-    G.socketUtils?.sendSingleChatMessage(chatMessageModel, _chatUser);
   }
 
   _clearMessage() {
