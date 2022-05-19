@@ -23,6 +23,7 @@ class _DataFromAPIState extends State<DataFromAPI> {
         u['incident_desc'],
         u['location'],
         u["image"],
+        u["user_id"],
       );
       reported_incident.add(incident);
     }
@@ -59,6 +60,16 @@ class _DataFromAPIState extends State<DataFromAPI> {
                         onRefresh: getReportedData,
                         child: Column(children: [
                           Text(
+                            'UserName:  ' + snapshot.data[i].user_id.toString(),
+                            style: TextStyle(
+                              color: Colors.black,
+                              letterSpacing: 2,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
                             snapshot.data[i].report_num.toString() +
                                 ':   ' +
                                 "Incident Type: " +
@@ -71,6 +82,7 @@ class _DataFromAPIState extends State<DataFromAPI> {
                             ),
                             textAlign: TextAlign.center,
                           ),
+                          SizedBox(height: 10),
                           Text(
                             "[incident_desc] :  " +
                                 snapshot.data[i].incident_desc,
@@ -80,6 +92,7 @@ class _DataFromAPIState extends State<DataFromAPI> {
                             ),
                             textAlign: TextAlign.center,
                           ),
+                          SizedBox(height: 10),
                           Text(
                             '[Address] : ' + snapshot.data[i].location,
                             style: TextStyle(
@@ -129,6 +142,7 @@ class _DataFromAPIState extends State<DataFromAPI> {
 class Incident {
   late final String dateTime, incidentType, incident_desc, location, image;
   late final int report_num;
+  late final int user_id;
   Incident(
     this.report_num,
     this.dateTime,
@@ -136,5 +150,6 @@ class Incident {
     this.incident_desc,
     this.location,
     this.image,
+    this.user_id,
   );
 }

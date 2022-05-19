@@ -1,5 +1,6 @@
 import 'package:completereport/Home/userhome.dart';
 import 'package:completereport/Information%20Center/user_typeof_informaton.dart';
+import 'package:completereport/Login/user_login.dart';
 import 'package:completereport/addtestimonial.dart';
 import 'package:completereport/report.dart';
 import 'package:completereport/user_chat/Routes.dart';
@@ -10,9 +11,13 @@ import 'package:flutter/material.dart';
 class UserTunnel extends StatefulWidget {
   @override
   State<UserTunnel> createState() => _UserTunnelState();
+  String username;
+  UserTunnel({required this.username});
 }
 
 class _UserTunnelState extends State<UserTunnel> {
+  String student_number = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,8 +40,8 @@ class _UserTunnelState extends State<UserTunnel> {
               SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => UserHome()));
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => LoginPage()));
                 },
                 child: Text('Home'),
                 style: ElevatedButton.styleFrom(
@@ -65,10 +70,14 @@ class _UserTunnelState extends State<UserTunnel> {
               SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
+                  if (student_number != widget.username) {
+                    student_number = widget.username;
+                  }
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ReportIncidents()));
+                          builder: (context) =>
+                              ReportIncidents(student_number: student_number)));
                 },
                 child: Text('Emegency Report'),
                 style: ElevatedButton.styleFrom(
@@ -84,7 +93,8 @@ class _UserTunnelState extends State<UserTunnel> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => AddTestimonial()));
+                          builder: (context) =>
+                              AddTestimonial(student_number: student_number)));
                 },
                 child: Text('Share Room'),
                 style: ElevatedButton.styleFrom(

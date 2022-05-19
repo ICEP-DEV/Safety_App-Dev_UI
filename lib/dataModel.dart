@@ -17,7 +17,7 @@ class DataModel {
   String incidentType;
   String incident_desc;
   String location;
-  int user_id;
+  String user_id;
   String image;
 
   factory DataModel.fromJson(Map<String, dynamic> json) => DataModel(

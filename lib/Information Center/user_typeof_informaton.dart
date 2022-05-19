@@ -25,7 +25,7 @@ class _TYPEINFORMATIONState extends State<TYPEINFORMATION> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LATESTUPDATES()));
                 },
-                child: Text('New updates'),
+                child: Text('Upcoming Events'),
                 style: ElevatedButton.styleFrom(
                     fixedSize: Size(250, 50),
                     primary: Colors.red[700],
@@ -39,7 +39,7 @@ class _TYPEINFORMATIONState extends State<TYPEINFORMATION> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => ABOUTAPP()));
                 },
-                child: Text('about safety app'),
+                child: Text('Tips'),
                 style: ElevatedButton.styleFrom(
                     fixedSize: Size(250, 50),
                     primary: Colors.red[700],

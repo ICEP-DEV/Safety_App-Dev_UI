@@ -46,7 +46,8 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
   }
 
   Future<List<User>> _getUsers() async {
-    var data = await http.get(Uri.http('10.0.2.2:5001', '/api/contacts'));
+    var data =
+        await http.get(Uri.https('gbv-beta.herokuapp.com', '/api/contacts'));
     var jsonData = json.decode(data.body);
 
     List<User> contacts = [];

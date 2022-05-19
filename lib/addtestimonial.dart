@@ -6,17 +6,17 @@ import 'testimonialModel.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class AddTestimonial extends StatefulWidget {
-  const AddTestimonial({Key? key}) : super(key: key);
-
   @override
   createState() => _AddTestimonial();
+  String student_number;
+  AddTestimonial({required this.student_number});
 }
 
 class _AddTestimonial extends State<AddTestimonial> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
   TextEditingController testimonialController = TextEditingController();
-
+  String Studentno = "";
   bool isAdd = false;
   final List<String> testimonial = [
     "Anonymous",
@@ -115,8 +115,11 @@ class _AddTestimonial extends State<AddTestimonial> {
                             backgroundColor: Colors.black,
                           ),
                     onPressed: () async {
-                      DataModel? data =
-                          await submitData(testimonialController, selectedName);
+                      if (Studentno != widget.student_number) {
+                        Studentno = widget.student_number;
+                      }
+                      DataModel? data = await submitData(
+                          testimonialController, selectedName, Studentno);
                       Fluttertoast.showToast(
                           msg: ' Testimony saved',
                           toastLength: Toast.LENGTH_SHORT,
@@ -149,12 +152,13 @@ class _AddTestimonial extends State<AddTestimonial> {
 String? selectedName;
 
 Future<DataModel?> submitData(
-    TextEditingController controller, selectedName) async {
+    TextEditingController controller, selectedName, String Studentno) async {
   var response =
       await http.post(Uri.https('gbv-beta.herokuapp.com', '/post/'), body: {
     "testimonial_descr": controller.text,
     "testimonial_date": DateTime.now().toString(),
     "user": selectedName.toString(),
+    "user_id": Studentno,
   });
   var data = response.body;
   print(data);

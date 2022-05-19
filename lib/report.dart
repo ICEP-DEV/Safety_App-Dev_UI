@@ -12,10 +12,11 @@ import 'api.dart';
 import 'dataModel.dart';
 
 class ReportIncidents extends StatefulWidget {
-  const ReportIncidents({Key? key}) : super(key: key);
-
   @override
   _ReportIncidentsState createState() => _ReportIncidentsState();
+  String student_number;
+
+  ReportIncidents({required this.student_number});
 }
 
 class _ReportIncidentsState extends State<ReportIncidents> {
@@ -33,6 +34,7 @@ class _ReportIncidentsState extends State<ReportIncidents> {
     });
   }
 
+  String Studentno = "";
   String img = "no image";
   String location = 'Null, Press Button';
   var address = 'No address';
@@ -118,15 +120,18 @@ class _ReportIncidentsState extends State<ReportIncidents> {
             style: TextStyle(color: Colors.white),
           ),
           onPressed: () async {
+            if (Studentno != widget.student_number) {
+              Studentno = widget.student_number;
+            }
             if (imageFile != null) {
-              DataModel? data =
-                  await submitData(selectedCrime, location, img, _controller);
+              DataModel? data = await submitData(
+                  selectedCrime, location, img, _controller, Studentno);
               setState(() {
                 _dataMOdel = data!;
               });
             } else {
-              DataModel? data =
-                  await submitData2(selectedCrime, location, _controller);
+              DataModel? data = await submitData2(
+                  selectedCrime, location, _controller, Studentno);
               setState(() {
                 _dataMOdel = data!;
               });
@@ -253,7 +258,7 @@ class _ReportIncidentsState extends State<ReportIncidents> {
   }
 
   Future<DataModel?> submitData(String selectedCrime, String location,
-      String img, TextEditingController controller) async {
+      String img, TextEditingController controller, String Studentno) async {
     var response = await http
         .post(Uri.https('gbv-beta.herokuapp.com', '/reportincident/'), body: {
       "dateTime": DateTime.now().toString(),
@@ -261,6 +266,7 @@ class _ReportIncidentsState extends State<ReportIncidents> {
       "incident_desc": _controller.text,
       "location": address,
       "image": img,
+      "user_id": Studentno,
     });
     var data = response.body;
 
@@ -272,7 +278,9 @@ class _ReportIncidentsState extends State<ReportIncidents> {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (BuildContext context) => ReportIncidents()));
+            builder: (BuildContext context) => ReportIncidents(
+                  student_number: widget.student_number,
+                )));
     if (response.statusCode == 200) {
       String responseString = response.body;
       dataMode_FromJson(responseString);
@@ -280,13 +288,14 @@ class _ReportIncidentsState extends State<ReportIncidents> {
   }
 
   Future<DataModel?> submitData2(String selectedCrime, String location,
-      TextEditingController controller) async {
+      TextEditingController controller, String Studentno) async {
     var response = await http
         .post(Uri.https('gbv-beta.herokuapp.com', '/reportincident/'), body: {
       "dateTime": DateTime.now().toString(),
       "incidentType": selectedCrime,
       "incident_desc": _controller.text,
       "location": address,
+      "user_id": Studentno,
     });
     var data = response.body;
 
@@ -298,7 +307,8 @@ class _ReportIncidentsState extends State<ReportIncidents> {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (BuildContext context) => ReportIncidents()));
+            builder: (BuildContext context) =>
+                ReportIncidents(student_number: widget.student_number)));
     if (response.statusCode == 200) {
       String responseString = response.body;
       dataMode_FromJson(responseString);

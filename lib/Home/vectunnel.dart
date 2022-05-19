@@ -1,5 +1,6 @@
 import 'package:completereport/Home/vechome.dart';
 import 'package:completereport/Information%20Center/vec_information_center.dart';
+import 'package:completereport/Login/user_login.dart';
 import 'package:completereport/Vec%20Chat/second.dart';
 import 'package:completereport/viewreport.dart';
 import 'package:flutter/material.dart';
@@ -32,8 +33,8 @@ class _VECTunnelState extends State<VECTunnel> {
               SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => VECHome()));
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => LoginPage()));
                 },
                 child: Text('Home'),
                 style: ElevatedButton.styleFrom(
