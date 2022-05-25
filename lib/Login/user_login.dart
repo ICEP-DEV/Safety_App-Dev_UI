@@ -1,3 +1,4 @@
+import 'package:completereport/Admin%20Dashboard/firstpath.dart';
 import 'package:completereport/Admin/admin.dart';
 import 'package:completereport/Home/usertunnel.dart';
 import 'package:completereport/Home/vectunnel.dart';
@@ -130,31 +131,30 @@ class _LoginPageState extends State<LoginPage> {
                           }
                           _formkey.currentState!.save();
                           if (username == "2022" && password == "Admin2022") {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => AdminSite()));
+                                    builder: (context) => MyApp3()));
                           } else if (username == "102022" &&
                               password == "vec102022") {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => VECTunnel()));
                           } else {
-                            //
-                            // DataModel? data = await submitData(
-                            // password,
-                            //username,
-                            // );
-                            //setState(() {
-                            // _dataMOdel = data!;
-                            // });
+                            DataModel? data = await submitData(
+                              password,
+                              username,
+                            );
+                            setState(() {
+                              _dataMOdel = data!;
+                            });
 
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        UserTunnel(username: username)));
+                            //  Navigator.pushReplacement(
+                            // context,
+                            // MaterialPageRoute(
+                            //builder: (context) =>
+                            // UserTunnel(username: username)));
                           }
                         },
                       ),
@@ -165,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Donot have an account? ",
+                        "Don't have an account? ",
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),
@@ -173,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text(
                           " Register Now",
                           style: TextStyle(
-                              color: Colors.blue, fontWeight: FontWeight.bold),
+                              color: Colors.red, fontWeight: FontWeight.bold),
                         ),
                         onTap: () {
                           Navigator.push(
@@ -197,7 +197,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text(
                           "  Reset Now",
                           style: TextStyle(
-                              color: Colors.blue, fontWeight: FontWeight.bold),
+                              color: Colors.red, fontWeight: FontWeight.bold),
                         ),
                         onTap: () {
                           Navigator.push(
@@ -232,6 +232,21 @@ class _LoginPageState extends State<LoginPage> {
           context,
           MaterialPageRoute(
               builder: (context) => UserTunnel(username: username)));
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Incorrect Details'),
+          content: Text("Enter valid login credentials !!!"),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Close'))
+          ],
+        ),
+      );
     }
 
     if (response.statusCode == 200) {

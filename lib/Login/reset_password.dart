@@ -1,5 +1,8 @@
+import 'package:completereport/Login/LoginModel.dart';
 import 'package:completereport/Login/user_login.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({Key? key}) : super(key: key);
@@ -14,6 +17,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   String password = "";
   String confirmPassword = "";
   String username = "";
+  DataModel? _dataMOdel;
 
   Widget _buildPassword() {
     return TextFormField(
@@ -56,7 +60,7 @@ class _ResetPasswordState extends State<ResetPassword> {
           },
           child: Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
         ),
-        labelText: " Comfirm Password",
+        labelText: " Confirm Password",
       ),
       keyboardType: TextInputType.visiblePassword,
       validator: (String? value) {
@@ -184,10 +188,13 @@ class _ResetPasswordState extends State<ResetPassword> {
                             return;
                           }
                           _formkey.currentState!.save();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginPage()));
+                          DataModel? data = await submitData(
+                            password,
+                            username,
+                          );
+                          setState(() {
+                            _dataMOdel = data!;
+                          });
                         },
                       ),
                     ),
@@ -200,5 +207,37 @@ class _ResetPasswordState extends State<ResetPassword> {
         ),
       ),
     );
+  }
+
+  Future<DataModel?> submitData(
+    String password,
+    String username,
+  ) async {
+    var response = await http.put(
+        Uri.https('gbv-beta.herokuapp.com', '/update/password/$username'),
+        body: {
+          "password": password,
+          "user_id": username,
+        });
+    var data = response.body.toString();
+
+    if (RegExp('successfully').hasMatch(data)) {
+      Fluttertoast.showToast(
+          msg: ' password successfully updated',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM);
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
+    } else {
+      Fluttertoast.showToast(
+          msg: "user don't exists",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM);
+    }
+
+    if (response.statusCode == 200) {
+      String responseString = response.body;
+      LogindataModelFromJson(responseString);
+    }
   }
 }

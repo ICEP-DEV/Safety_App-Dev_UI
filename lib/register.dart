@@ -182,9 +182,9 @@ class _RegisterAccountState extends State<RegisterAccount> {
       keyboardType: TextInputType.phone,
       validator: (String? value) {
         if (value!.isEmpty) {
-          return "your contact details is Required";
+          return "contact details Required";
         } else if (value.length != 10) {
-          return "Incorrect contact details , Enter valid south african contacts";
+          return "Incorrect contact details , Enter valid South African contacts";
         } else if (value[0] != "0" || value[1] == "0") {
           return "Incorrect contact details , Enter valid South African contacts";
         }
@@ -209,9 +209,9 @@ class _RegisterAccountState extends State<RegisterAccount> {
       keyboardType: TextInputType.number,
       validator: (String? value) {
         if (value!.isEmpty) {
-          return "Student / Staff Number is Required";
+          return "Student / Staff Number Required";
         } else if (value.length != 9 && value.length != 6) {
-          return " invalid Student/ staff number";
+          return " Invalid Student/ Staff number";
         }
 
         staff_student = value;

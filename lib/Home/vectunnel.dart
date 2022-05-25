@@ -26,23 +26,21 @@ class _VECTunnelState extends State<VECTunnel> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircleAvatar(
-                backgroundImage: AssetImage('lib/Home/assets/img3.png'),
-                radius: 130,
-              ),
-              SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
+              GestureDetector(
+                child: Text(
+                  "Signout",
+                  style: TextStyle(
+                      color: Colors.red[700], fontWeight: FontWeight.bold),
+                ),
+                onTap: () {
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => LoginPage()));
                 },
-                child: Text('Home'),
-                style: ElevatedButton.styleFrom(
-                    fixedSize: Size(250, 50),
-                    primary: Colors.red[700],
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    )),
+              ),
+              SizedBox(height: 10),
+              CircleAvatar(
+                backgroundImage: AssetImage('lib/Home/assets/img3.png'),
+                radius: 130,
               ),
               SizedBox(height: 10),
               ElevatedButton(
