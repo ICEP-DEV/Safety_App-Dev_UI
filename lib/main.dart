@@ -1,9 +1,6 @@
-import 'package:admin/controller/menu_controller.dart';
-import 'package:admin/pages/home_page.dart';
-import 'package:admin/pages/locator.dart';
-
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_socket_io/providers/login.dart';
+import 'package:flutter_socket_io/screens/login.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -16,15 +13,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Socket.IO',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark().copyWith(
-          textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)),
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => MenuController()),
-        ],
-        child: HomePage(),
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+      ),
+      home: ChangeNotifierProvider(
+        create: (context) => LoginProvider(),
+        child: const LoginScreen(),
       ),
     );
   }
