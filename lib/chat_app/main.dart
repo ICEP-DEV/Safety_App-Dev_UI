@@ -4,11 +4,11 @@ import 'package:completereport/chat_app/screens/login.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyApp4());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp4 extends StatelessWidget {
+  const MyApp4({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
+import 'package:completereport/chat_app/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:completereport/chat_app/providers/home.dart';
 import 'package:completereport/chat_app/providers/login.dart';
-import 'package:completereport/chat_app/screens/home.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -42,6 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var titleLarge;
     return Scaffold(
       body: Center(
         child: Padding(
@@ -73,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Text(
                 'Chat-Box',
-                style: Theme.of(context).textTheme.
+                style: TextStyle(color: Colors.black),
               ),
               const SizedBox(
                 height: 40,
