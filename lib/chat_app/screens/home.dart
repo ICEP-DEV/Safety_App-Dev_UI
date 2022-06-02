@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:completereport/chat_app/model/message.dart';
 import 'package:completereport/chat_app/providers/home.dart';
 import 'package:intl/intl.dart';
-
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:provider/provider.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
