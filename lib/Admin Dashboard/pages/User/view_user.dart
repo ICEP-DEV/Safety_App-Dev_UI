@@ -59,8 +59,6 @@ class _View_UserState extends State<View_User> {
                                     child: Container(
                                       child: Text(
                                         "User Details " +
-                                            " "[index] +
-                                            " :  " +
                                             snapshot.data[index].name +
                                             " " +
                                             snapshot.data[index].surname +
